@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory
 import services.jda.CommandListener
 import services.jda.commands.attendance.AttendanceCommand
 import services.jda.commands.help.HelpCommand
+import services.jda.commands.ping.PingCommand
+import services.jda.commands.register.RegisterCommand
 import services.jda.commands.spreadsheet.SpreadsheetCommand
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
@@ -42,5 +44,7 @@ object JDAService {
         AttendanceCommand.load()
         SpreadsheetCommand.load()
         HelpCommand.load()
+        RegisterCommand.load()
+        PingCommand.load()
     }
 }

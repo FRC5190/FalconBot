@@ -1,21 +1,18 @@
 package services.jda.commands.attendance
 
 import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.entities.User
 import services.GoogleSheets
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import services.JDAService
 import services.jda.commands.Command
-import java.awt.Color
 
 object AttendanceCommand : Command(
     name = "Attendance",
     description = "Gets attendance data.",
     ids = listOf(
         "attendance",
+        "hrs",
         "attend",
-        "hours",
-        "hrs"
+        "hours"
     )
 ){
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
@@ -30,12 +27,16 @@ object AttendanceCommand : Command(
             var userId: String = users.find { user -> user[1] == event.author.id }!!.get(0)
             var userRow = leaderboard.find { row -> row[0] == userId }!!
             var userPlace = leaderboard.indexOf(userRow)!!
+            var logginPart = userRow[7].split('T')[0].split('-')
+            var lastLoggin: String = if (logginPart[0] == "LOGGED IN") {"Logged in."} else {
+                "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
+            }
 
             var embed = EmbedBuilder()
                 .setTitle(this.name)
-                .setDescription("#$userPlace: ${userRow[1]} ${userRow[2]}")
-                .addField("${userRow[9]}", "", false)
-                .setColor(Color(104, 10, 15))
+                .setDescription("**#$userPlace:** ${userRow[1]} ${userRow[2]}")
+                .addField(lastLoggin, userRow[9], false)
+                .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
         } catch(e: Exception) {

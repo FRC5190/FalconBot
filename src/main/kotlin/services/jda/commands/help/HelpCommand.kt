@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.JDAService
 import services.jda.commands.Command
-import java.awt.Color
 
 object HelpCommand: Command(
     name = "Help",
@@ -17,9 +16,9 @@ object HelpCommand: Command(
 
         if (args.size == 1) {
             val embed = EmbedBuilder()
-                .setTitle("Help")
+                .setTitle("**Help**")
                 .setDescription("Type `!help [command]` for more information on a specific command.")
-                .setColor(Color(104, 10, 15))
+                .setColor(ColorConstants.FALCON_MAROON)
 
             JDAService.commands.forEach { command ->
                 embed.addField(
@@ -36,19 +35,19 @@ object HelpCommand: Command(
                 val command = JDAService.commandIds[stringArgs]!!
 
                 val embed = EmbedBuilder()
-                    .setTitle("Help")
-                    .setDescription("**${command.name}**\n${command.description}")
-                    .setColor(Color(104, 10, 15))
+                    .setTitle("**${command.name}**")
+                    .setDescription(command.description)
+                    .setColor(ColorConstants.FALCON_MAROON)
                     .addField(
                         command.ids.fold("", {acc, s -> "$acc`!$s` "}).removeSuffix(" "),
-                        "~~- - - - - - - - - - - - - - - - - - - - - - - - -~~",
+                        "**~~---------------------------------------------------~~**\n**__Subcommands:__**",
                         false
                     )
 
                 command.children.forEach { child ->
                     embed.addField(
                         "${child.name}",
-                        child.ids.take(2).fold("", {acc, s -> "$acc`!${command.ids[0]} $s` "}).removeSuffix(" "),
+                        child.ids.take(2).fold("", {acc, s -> "$acc`...$s` "}).removeSuffix(" "),
                         true
                     )
                 }
