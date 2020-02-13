@@ -3,7 +3,8 @@ package services.jda.commands
 import services.GoogleSheets
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-object AttendanceCommand : Command(AttendanceCommand){
+object AttendanceCommand : Command(){
+    override val self = this
     override val identifiers = listOf(
         "attendence",
         "attend",
@@ -13,7 +14,7 @@ object AttendanceCommand : Command(AttendanceCommand){
 
     override fun execute(event: MessageReceivedEvent) {
         val data = GoogleSheets.service.spreadsheets().values()
-            .get(SheetsConstants.falcontimeSheet, "Current")
+            .get(SheetsConstants.falcontimeSheet, "Current!A2:L1000")
             .execute()
 
         val values: List<List<String>> = data.getValues() as List<List<String>>
@@ -39,10 +40,13 @@ object AttendanceCommand : Command(AttendanceCommand){
                 }
             }
 
-            val sorted = values[0] + values.drop(1).sortedWith(comparator) as List<String>
+            val sorted = values.sortedWith(comparator)
+            var parsed = ""
+            for (row in sorted.subList(0, 10)) {
+                parsed += "${row[1]}, ${row[9]} \n"
+            }
 
-            val message = sorted.take(11).fold("", {acc, value -> acc + "${value[1]}, ${value[9]}\n"})
-            event.channel.sendMessage(message).queue()
+            event.channel.sendMessage(parsed).queue()
         }
     }
 }

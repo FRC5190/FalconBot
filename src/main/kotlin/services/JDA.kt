@@ -8,6 +8,7 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
 import services.jda.CommandListener
+import services.jda.commands.AttendanceCommand
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
 
@@ -28,5 +29,13 @@ object JDA {
         service = JDABuilder(credentials["token"] as String)
             .addEventListeners(CommandListener())
             .build()
+            .awaitReady()
+
+        loadCommands()
+        logger.info("Initialized JDA")
+    }
+
+    fun loadCommands() {
+        AttendanceCommand.load()
     }
 }

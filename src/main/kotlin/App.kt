@@ -18,8 +18,7 @@ object Application {
 
         println("< Google Sheets > \n" +
                 "   > Name: ${GoogleSheets.service.applicationName} \n" +
-                "   > Base Url: ${GoogleSheets.service.baseUrl} \n" +
-                "   > Root Url: ${GoogleSheets.service.rootUrl} \n")
+                "   > Url: ${GoogleSheets.service.baseUrl} \n")
     }
 }
 

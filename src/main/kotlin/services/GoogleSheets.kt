@@ -11,14 +11,19 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.util.store.FileDataStoreFactory
 import com.google.api.services.sheets.v4.Sheets
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
 
 object GoogleSheets {
+    val logger = LoggerFactory.getLogger("Application")
+
     lateinit var service: Sheets
 
     fun start() {
+        logger.info("Starting Sheets API...")
+
         val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
 
         service = Sheets.Builder(
@@ -28,6 +33,8 @@ object GoogleSheets {
         )
             .setApplicationName("FRC5190 Discord Bot")
             .build()
+
+        logger.info("Initialized Sheets API")
     }
 
     private fun getCredentials(HTTP_TRANSPORT: NetHttpTransport): Credential {
