@@ -1,0 +1,5 @@
+src/main/resources
+.idea/*
+.gradle/*
+tokens/
+build/
