@@ -1,4 +1,4 @@
-src/main/resources
+src/main/resources/*.json
 .idea/*
 .gradle/*
 tokens/

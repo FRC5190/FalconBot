@@ -7,10 +7,6 @@ import services.jda.CommandListener
 
 object Application {
     fun start() {
-        val logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)
-        logger.info("Starting Services...")
-        logger.debug("test")
-
         JDA.start()
         GoogleSheets.start()
 
