@@ -3,18 +3,35 @@ package services.jda.commands
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.JDAService
 
-abstract class Command() {
-    abstract val self: Command
-    abstract val name: String
-    abstract val description: String
-    abstract val identifiers: List<String>
+abstract class Command(
+    private val parent: Command? = null,
+    val name: String,
+    val description: String,
+    val ids: List<String>
+) {
+    var fullIds = mutableListOf<String>()
+    val children = mutableListOf<Command>()
 
-    abstract fun execute(event: MessageReceivedEvent)
+    abstract fun execute(event: MessageReceivedEvent, args: List<String>)
+    open fun initSubcommands() {}
 
     fun load() {
-        JDAService.commands.add(self)
-        for (identifier in identifiers) {
-            JDAService.commandIdentifiers.put(identifier, self)
+        if (parent == null) {
+            JDAService.commands.add(this)
+            for (identifier in ids) {
+                JDAService.commandIds.put(identifier, this)
+                fullIds.add(identifier)
+            }
+        } else {
+            parent.children.add(this)
+            for (identifier in ids) {
+                for (parentId in parent.fullIds) {
+                    JDAService.commandIds.put("$parentId $identifier", this)
+                    fullIds.add("$parentId $identifier")
+                }
+            }
         }
+
+        initSubcommands()
     }
 }

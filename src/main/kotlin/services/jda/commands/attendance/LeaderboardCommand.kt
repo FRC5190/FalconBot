@@ -1,0 +1,40 @@
+package services.jda.commands.attendance
+
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import services.jda.commands.Command
+import java.awt.Color
+
+object LeaderboardCommand : Command(
+    parent = AttendanceCommand,
+    name = "Leaderboard",
+    description = "Gets the attendance leaderboard",
+    ids = listOf(
+        "l",
+        "lead",
+        "leader",
+        "leaderboard"
+    )
+) {
+    override fun execute(event: MessageReceivedEvent, args: List<String>) {
+        var leaderboard = AttendanceCommand.getLeaderboard()
+        var first = mutableListOf<String>()
+        var last = mutableListOf<String>()
+        var hours = mutableListOf<String>()
+        for (row in leaderboard.subList(0, 12)) {
+            first.add(first.count(), row[1])
+            last.add(last.count(), row[2])
+            hours.add(hours.count(), row[9])
+        }
+
+        val embed = EmbedBuilder()
+            .setTitle("Attendance Leaderboard")
+            .setColor(Color(104, 10, 15))
+
+        for (i in 0..11) {
+            embed.addField("#${i + 1}: ${first[i]} ${last[i]}", hours[i], true)
+        }
+
+        event.channel.sendMessage(embed.build()).queue()
+    }
+}
