@@ -1,6 +1,7 @@
 package services.jda
 
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.MessageType
 import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -23,13 +24,13 @@ class CommandListener : ListenerAdapter() {
     }
 
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
-        if (!event.author.isBot && event.message.contentRaw != null && event.message.contentRaw[0] == JDAConstants.kPrefix) {
+        if (!event.author.isBot && event.message.contentRaw.startsWith(JDAConstants.kPrefix)) {
             onGenericCommandReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
         }
     }
 
     override fun onPrivateMessageReceived(event: PrivateMessageReceivedEvent) {
-        if (!event.author.isBot && event.message.contentRaw != null && event.message.contentRaw[0] == JDAConstants.kPrefix) {
+        if (!event.author.isBot && event.message.contentRaw.startsWith(JDAConstants.kPrefix)) {
             onGenericCommandReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
         }
     }
