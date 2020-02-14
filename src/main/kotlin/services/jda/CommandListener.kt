@@ -10,10 +10,10 @@ import services.JDAService
 
 class CommandListener : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
-        if (JDAService.credentials.containsKey("restartChannel")) {
-            var restartChannelId = JDAService.credentials["restartChannel"]!!
+        if (JDAService.credentials.containsKey("restartchannel")) {
+            var restartChannelId = JDAService.credentials["restartchannel"]!!
             var restartChannel = JDAService.service.getTextChannelById(restartChannelId as String)!!
-            JDAService.credentials.remove("restartChannel")
+            JDAService.credentials.remove("restartchannel")
 
             var embed = EmbedBuilder()
                 .setTitle("Restarted!")
@@ -37,7 +37,7 @@ class CommandListener : ListenerAdapter() {
     }
 
     private fun onGenericCommandReceived(event: MessageReceivedEvent){
-        val content = event.message.contentRaw.removePrefix(JDAConstants.kPrefix.toString()).split(' ')
+        val content = event.message.contentRaw.removePrefix(JDAConstants.kPrefix.toString()).toLowerCase().split(' ')
 
         for (i in content.count() downTo  0) {
             if (i == 0) {
