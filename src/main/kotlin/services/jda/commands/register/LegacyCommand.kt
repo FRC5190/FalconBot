@@ -35,6 +35,7 @@ object LegacyCommand : Command(
                     data.setValues(values)
                     GoogleSheets.service.spreadsheets().values()
                         .update(SheetsConstants.falconusersSheet, "Sheet1!A2:B1000", data)
+                        .setValueInputOption("RAW")
                         .execute()
 
                     event.channel.sendMessage("FalconTime and Discord account linked!")
