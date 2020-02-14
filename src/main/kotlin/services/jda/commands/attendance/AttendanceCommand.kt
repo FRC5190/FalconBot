@@ -23,12 +23,15 @@ object AttendanceCommand : Command(
         val users = userData.getValues() as List<List<String>>
         var leaderboard = getLeaderboard()
 
-        try {
-            var userId: String = users.find { user -> user[1] == event.author.id }!!.get(0)
+        var userId: String = users.find { user -> user[1] == event.author.id }?.get(0) ?: ""
+
+        if (userId != "") {
             var userRow = leaderboard.find { row -> row[0] == userId }!!
             var userPlace = leaderboard.indexOf(userRow)!! + 1
             var logginPart = userRow[7].split('T')[0].split('-')
-            var lastLoggin: String = if (logginPart[0] == "LOGGED IN") {"Logged in."} else {
+            var lastLoggin: String = if (logginPart[0] == "LOGGED IN") {
+                "Logged in."
+            } else {
                 "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
             }
             var hms = userRow[9].split('/')
@@ -40,8 +43,12 @@ object AttendanceCommand : Command(
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
-        } catch(e: Exception) {
-            event.channel.sendMessage("User not found.\nUse `!register` to register a new FalconTime account.\nUse `!register legacy [FalconTime ID]` if you already have a FalconTime account.\nLegacy registration can be completed in a private dm.").queue()
+        } else {
+            event.channel.sendMessage("User not found.\n" +
+                        "Use `!register` to register a new FalconTime account.\n" +
+                        "Use `!register legacy [FalconTime ID]` if you already have a FalconTime account.\n" +
+                        "Registration can be completed in a private dm with the bot."
+            ).queue()
         }
     }
 
