@@ -69,7 +69,9 @@ object AttendanceCommand : Command(
             for (row in values) {
                 if (row[7] == "LOGGED IN" && row[9] != "") {
 
-                    var totalTime = LocalTime.parse(row[9])
+                    val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+
+                    var totalTime = LocalTime.parse(row[9], formatter)
                     var lastLogin = LocalDateTime.parse(row[6])
                     var currentTime = LocalDateTime.now()
 
