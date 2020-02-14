@@ -7,22 +7,18 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import services.JDAService
+import java.io.File
 import java.io.FileWriter
 
 class CommandListener : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
-        if (JDAService.credentials.containsKey("restartchannel")) {
-            var restartChannelId = JDAService.credentials["restartchannel"]!!
-            var restartChannel = JDAService.service.getTextChannelById(restartChannelId as String)!!
-            JDAService.credentials.remove("restartchannel")
-            FileWriter("jdacredentials.json").use { out -> out.write(JDAService.credentials.toJSONString()) }
-
+        if (false) {
             var embed = EmbedBuilder()
                 .setTitle("Restarted!")
                 .setDescription("Bot was restarted from this channel.")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            restartChannel.sendMessage(embed.build()).queue()
+            //restartChannel.sendMessage(embed.build()).queue()
         }
     }
 

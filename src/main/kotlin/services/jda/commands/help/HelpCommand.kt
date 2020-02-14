@@ -18,7 +18,7 @@ object HelpCommand: Command(
         if (args.size == 1) {
             val embed = EmbedBuilder()
                 .setTitle("**Help**")
-                .setDescription("Type `!help [command]` for more information on a specific command.")
+                .setDescription("Type `!help [command]` for more information on a specific command.\nCommands also work in private messages with the bot.")
                 .setColor(ColorConstants.FALCON_MAROON)
 
             JDAService.commands.forEach { command ->

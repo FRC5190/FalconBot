@@ -31,7 +31,8 @@ object LeaderboardCommand : Command(
             .setColor(ColorConstants.FALCON_MAROON)
 
         for (i in 0..11) {
-            embed.addField("**#${i + 1}:** ${first[i]} ${last[i]}", hours[i], true)
+            var hms = hours[i].split('/')
+            embed.addField("**#${i + 1}:** ${first[i]} ${last[i]}", "${hms[0]} hrs, ${hms[1]} min, ${hms[2]} sec", true)
         }
 
         event.channel.sendMessage(embed.build()).queue()

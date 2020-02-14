@@ -31,16 +31,17 @@ object AttendanceCommand : Command(
             var lastLoggin: String = if (logginPart[0] == "LOGGED IN") {"Logged in."} else {
                 "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
             }
+            var hms = userRow[9].split('/')
 
             var embed = EmbedBuilder()
                 .setTitle(this.name)
                 .setDescription("**#$userPlace:** ${userRow[1]} ${userRow[2]}")
-                .addField(lastLoggin, userRow[9], false)
+                .addField(lastLoggin, "${hms[0]} hrs, ${hms[1]} min, ${hms[2]} sec", false)
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
         } catch(e: Exception) {
-            event.channel.sendMessage("User not found.\nUse `!register` to register your account.").queue()
+            event.channel.sendMessage("User not found.\nUse `!register` to register a new FalconTime account.\nIf you already have a FalconTime account, use `!register legacy [FalconTime ID]`\nLegacy registration can be completed in a private dm.").queue()
         }
     }
 

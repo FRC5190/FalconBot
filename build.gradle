@@ -33,6 +33,7 @@ task fatJar(type: Jar) {
 
     manifest {
         attributes 'Main-Class': 'AppKt'
+        version = null
     }
 
     from sourceSets.main.output
