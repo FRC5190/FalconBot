@@ -39,7 +39,7 @@ object AttendanceCommand : Command(
             var embed = EmbedBuilder()
                 .setTitle(this.name)
                 .setDescription("**#$userPlace:** ${userRow[1]} ${userRow[2]}")
-                .addField(lastLoggin, "${hms[0]} hrs, ${hms[1]} min, ${hms[2]} sec", false)
+                .addField(lastLoggin, "${hms[0].toInt()}h ${hms[1].toInt()}m ${hms[2].toInt()}s", false)
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
