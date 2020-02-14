@@ -5,6 +5,7 @@ import services.GoogleSheets
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.jda.commands.Command
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
@@ -77,16 +78,16 @@ object AttendanceCommand : Command(
                     currentTime.plusMinutes(hours)
                     var seconds = lastLogin.until(currentTime, ChronoUnit.SECONDS)
 
-                    row[9] = "${totalTime[0].toInt() + hours}:${totalTime[1].toInt()}:${totalTime[2].toInt()}"
+                    row[9] = "${totalTime[0].toInt() + hours}:${totalTime[1].toInt() + minutes}:${totalTime[2].toInt() + seconds}"
                 }
             }
 
             val comparator = Comparator<List<String>> { a, b ->
                 val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-                val hmsA = if (a[9] == "") { LocalDateTime.parse("00:00:00", formatter) }
-                else { LocalDateTime.parse(a[9], formatter) }
-                val hmsB = if (b[9] == "") { LocalDateTime.parse("00:00:00", formatter) }
-                else { LocalDateTime.parse(b[9], formatter) }
+                val hmsA = if (a[9] == "") { LocalTime.parse("00:00:00", formatter) }
+                else { LocalTime.parse(a[9], formatter) }
+                val hmsB = if (b[9] == "") { LocalTime.parse("00:00:00", formatter) }
+                else { LocalTime.parse(b[9], formatter) }
                 hmsA.compareTo(hmsB)
             }
 
