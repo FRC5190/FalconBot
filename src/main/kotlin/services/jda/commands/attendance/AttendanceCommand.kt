@@ -65,7 +65,7 @@ object AttendanceCommand : Command(
             return listOf()
         } else {
             for (row in values) {
-                if (row[7] != "LOGGED IN") {
+                if (row[7] == "LOGGED IN" && row[9] != "") {
                     var totalTime = row[9].split(':')
 
                     var lastLogin = LocalDateTime.parse(row[6])
