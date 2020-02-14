@@ -15,7 +15,7 @@ object RegisterCommand : Command(
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         val embed = EmbedBuilder()
             .setTitle(this.name)
-            .setDescription("This command has not been implemented.\nUse `!register legacy [FalconHours ID]` to link a FalconHours account and a Discord account.")
+            .setDescription("This command has not been implemented.\nUse `!register legacy [FalconTime ID]` to link a FalconTime account and a Discord account.")
             .setColor(ColorConstants.FALCON_MAROON)
 
         event.channel.sendMessage(embed.build()).queue()

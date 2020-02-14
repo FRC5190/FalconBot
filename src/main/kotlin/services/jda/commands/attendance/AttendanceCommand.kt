@@ -26,7 +26,7 @@ object AttendanceCommand : Command(
         try {
             var userId: String = users.find { user -> user[1] == event.author.id }!!.get(0)
             var userRow = leaderboard.find { row -> row[0] == userId }!!
-            var userPlace = leaderboard.indexOf(userRow)!!
+            var userPlace = leaderboard.indexOf(userRow)!! + 1
             var logginPart = userRow[7].split('T')[0].split('-')
             var lastLoggin: String = if (logginPart[0] == "LOGGED IN") {"Logged in."} else {
                 "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
