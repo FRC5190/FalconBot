@@ -16,7 +16,8 @@ object EndCommand : Command(
     ids = listOf(
         "end",
         "exit",
-        "restart"
+        "restart",
+        "update"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {

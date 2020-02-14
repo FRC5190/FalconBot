@@ -34,12 +34,13 @@ object AttendanceCommand : Command(
             } else {
                 "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
             }
+            
             var hms = userRow[9].split(':')
 
             var embed = EmbedBuilder()
                 .setTitle(this.name)
-                .setDescription("**#$userPlace:** ${userRow[1]} ${userRow[2]}")
-                .addField(lastLoggin, "${hms[0].toInt()}h ${hms[1].toInt()}m ${hms[2].toInt()}s", false)
+                .addField("**#$userPlace:** ${userRow[1]} ${userRow[2]}", "${hms[0].toInt()}h ${hms[1].toInt()}m ${hms[2].toInt()}s", false)
+                .setDescription(lastLoggin)
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
