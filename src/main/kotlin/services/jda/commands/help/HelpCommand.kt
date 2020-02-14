@@ -37,25 +37,39 @@ object HelpCommand: Command(
             if (JDAService.commandIds.containsKey(stringArgs) && JDAService.commandIds[stringArgs]!!.permissionLevel == CommandPermssionLevel.ALL) {
                 val command = JDAService.commandIds[stringArgs]!!
 
-                val embed = EmbedBuilder()
-                    .setTitle("**${command.name}**")
-                    .setDescription(command.description)
-                    .setColor(ColorConstants.FALCON_MAROON)
-                    .addField(
-                        command.ids.fold("", {acc, s -> "$acc`!$s` "}).removeSuffix(" "),
-                        "**~~---------------------------------------------------~~**\n**__Subcommands:__**",
-                        false
-                    )
+                if (command.children.count() != 0) {
+                    val embed = EmbedBuilder()
+                        .setTitle("**${command.name}**")
+                        .setDescription(command.description)
+                        .setColor(ColorConstants.FALCON_MAROON)
+                        .addField(
+                            command.ids.fold("", { acc, s -> "$acc`!$s` " }).removeSuffix(" "),
+                            "**~~---------------------------------------------------~~**\n**__Subcommands:__**",
+                            false
+                        )
 
-                command.children.forEach { child ->
-                    embed.addField(
-                        "${child.name}",
-                        child.ids.take(2).fold("", {acc, s -> "$acc`...$s` "}).removeSuffix(" "),
-                        true
-                    )
+                    command.children.forEach { child ->
+                        embed.addField(
+                            "${child.name}",
+                            child.ids.take(2).fold("", { acc, s -> "$acc`...$s` " }).removeSuffix(" "),
+                            true
+                        )
+                    }
+
+                    event.channel.sendMessage(embed.build()).queue()
+                } else {
+                    val embed = EmbedBuilder()
+                        .setTitle("**${command.name}**")
+                        .setDescription(command.description)
+                        .setColor(ColorConstants.FALCON_MAROON)
+                        .addField(
+                            command.ids.fold("", { acc, s -> "$acc`!$s` " }).removeSuffix(" "),
+                            "**~~---------------------------------------------------~~**",
+                            false
+                        )
+
+                    event.channel.sendMessage(embed.build()).queue()
                 }
-
-                event.channel.sendMessage(embed.build()).queue()
             } else {
                 event.channel.sendMessage("Unrecognized command `!${stringArgs}`")
             }
