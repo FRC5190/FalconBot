@@ -34,7 +34,7 @@ object AttendanceCommand : Command(
             } else {
                 "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
             }
-            var hms = userRow[9].split('/')
+            var hms = userRow[9].split(':')
 
             var embed = EmbedBuilder()
                 .setTitle(this.name)
