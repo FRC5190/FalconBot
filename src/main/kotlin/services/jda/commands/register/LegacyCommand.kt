@@ -14,7 +14,7 @@ object LegacyCommand : Command(
 ){
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (args.count() == 2) {
-            event.channel.sendMessage("No FalconTime ID was provided.")
+            event.channel.sendMessage("No FalconTime ID was provided.").queue()
         } else {
             val data = GoogleSheets.service.spreadsheets().values()
                 .get(SheetsConstants.falconusersSheet, "Sheet1!A2:B1000")
@@ -38,9 +38,9 @@ object LegacyCommand : Command(
                         .setValueInputOption("RAW")
                         .execute()
 
-                    event.channel.sendMessage("FalconTime and Discord account linked!")
+                    event.channel.sendMessage("FalconTime and Discord account linked!").queue()
                 } else {
-                    event.channel.sendMessage("A FalconTime account was not found under that id.")
+                    event.channel.sendMessage("A FalconTime account was not found under that id.").queue()
                 }
             }
         }
