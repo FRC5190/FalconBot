@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 object AttendanceCommand : Command(
     name = "Attendance",
@@ -67,18 +68,14 @@ object AttendanceCommand : Command(
         } else {
             for (row in values) {
                 if (row[7] == "LOGGED IN" && row[9] != "") {
-                    var totalTime = row[9].split(':')
 
+                    var totalTime = LocalTime.parse(row[9])
                     var lastLogin = LocalDateTime.parse(row[6])
                     var currentTime = LocalDateTime.now()
 
-                    var hours = lastLogin.until(currentTime, ChronoUnit.HOURS)
-                    currentTime.plusHours(hours)
-                    var minutes = lastLogin.until(currentTime, ChronoUnit.MINUTES)
-                    currentTime.plusMinutes(hours)
-                    var seconds = lastLogin.until(currentTime, ChronoUnit.SECONDS)
+                    totalTime.plusSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
 
-                    row[9] = "${totalTime[0].toInt() + hours}:${totalTime[1].toInt() + minutes}:${totalTime[2].toInt() + seconds}"
+                    row[9] = "${totalTime.hour}:${totalTime.minute}:${totalTime.second}"
                 }
             }
 

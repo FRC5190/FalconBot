@@ -18,11 +18,11 @@ object PingCommand : Command(
         var currentTime = LocalDateTime.now()
 
         var days = Application.startTime.until(currentTime, ChronoUnit.DAYS)
-        currentTime.plusDays(days)
+        currentTime.minusDays(days)
         var hours = Application.startTime.until(currentTime, ChronoUnit.HOURS)
-        currentTime.plusHours(hours)
+        currentTime.minusHours(hours)
         var minutes = Application.startTime.until(currentTime, ChronoUnit.MINUTES)
-        currentTime.plusMinutes(minutes)
+        currentTime.minusMinutes(minutes)
         var seconds = Application.startTime.until(currentTime, ChronoUnit.SECONDS)
 
         val embed = EmbedBuilder()
