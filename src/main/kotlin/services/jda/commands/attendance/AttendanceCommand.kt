@@ -41,7 +41,7 @@ object AttendanceCommand : Command(
 
             event.channel.sendMessage(embed.build()).queue()
         } catch(e: Exception) {
-            event.channel.sendMessage("User not found.\nUse `!register` to register a new FalconTime account.\nIf you already have a FalconTime account, use `!register legacy [FalconTime ID]`\nLegacy registration can be completed in a private dm.").queue()
+            event.channel.sendMessage("User not found.\nUse `!register` to register a new FalconTime account.\nUse `!register legacy [FalconTime ID]` if you already have a FalconTime account.\nLegacy registration can be completed in a private dm.").queue()
         }
     }
 
