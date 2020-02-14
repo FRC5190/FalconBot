@@ -5,6 +5,7 @@ import services.JDAService
 
 abstract class Command(
     private val parent: Command? = null,
+    val permissionLevel: CommandPermssionLevel = CommandPermssionLevel.ALL,
     val name: String,
     val description: String,
     val ids: List<String>
