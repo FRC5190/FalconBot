@@ -3,24 +3,31 @@ package services.jda.commands.ping
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.jda.commands.Command
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 object PingCommand : Command(
     name = "Ping",
     description = "Gets the response time of the bot.",
     ids = listOf(
-        "ping"
+        "ping",
+        "uptime"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        var timeSince = Application.getTime() - Application.startTime
-        var timeDays = timeSince / 86400000
-        var timeHours = (timeSince % 86400000) / 3600000
-        var timeMins = ((timeSince % 86400000) % 3600000) / 60000
-        var timeSecs = (((timeSince % 86400000) % 3600000) % 60000) / 1000
+        var currentTime = LocalDateTime.now()
+
+        var days = Application.startTime.until(currentTime, ChronoUnit.DAYS)
+        currentTime.plusDays(days)
+        var hours = Application.startTime.until(currentTime, ChronoUnit.HOURS)
+        currentTime.plusHours(hours)
+        var minutes = Application.startTime.until(currentTime, ChronoUnit.MINUTES)
+        currentTime.plusMinutes(minutes)
+        var seconds = Application.startTime.until(currentTime, ChronoUnit.SECONDS)
 
         val embed = EmbedBuilder()
             .setTitle("Pong!")
-            .addField("Uptime", "$timeDays days, $timeHours hours, $timeMins minutes, $timeSecs seconds", false)
+            .addField("Uptime", "${days}d, ${hours}h, ${minutes}m, ${seconds}s", false)
             .addField("Gateway Latency", "${event.jda.gatewayPing}ms", false)
             .addField("REST Latency", "${event.jda.restPing.complete()}ms", false)
             .setColor(ColorConstants.FALCON_MAROON)

@@ -1,9 +1,11 @@
 import services.JDAService
 import services.GoogleSheets
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 object Application {
-    var startTime: Long = 0
+    lateinit var startTime: LocalDateTime
 
     fun start() {
         JDAService.start()
@@ -20,12 +22,7 @@ object Application {
                 "   > Url: ${GoogleSheets.service.baseUrl} \n")
 
         val calendar = Calendar.getInstance()
-        startTime = calendar.timeInMillis
-    }
-
-    fun getTime(): Long {
-        val calendar = Calendar.getInstance()
-        return calendar.timeInMillis
+        startTime = LocalDateTime.now()
     }
 }
 

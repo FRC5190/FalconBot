@@ -4,6 +4,9 @@ import net.dv8tion.jda.api.EmbedBuilder
 import services.GoogleSheets
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.jda.commands.Command
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 object AttendanceCommand : Command(
     name = "Attendance",
@@ -28,19 +31,17 @@ object AttendanceCommand : Command(
         if (userId != "") {
             var userRow = leaderboard.find { row -> row[0] == userId }!!
             var userPlace = leaderboard.indexOf(userRow)!! + 1
-            var logginPart = userRow[7].split('T')[0].split('-')
-            var lastLoggin: String = if (logginPart[0] == "LOGGED IN") {
-                "Logged in."
-            } else {
-                "${logginPart[1].toInt()}/${logginPart[2].toInt()}/${logginPart[0]}"
-            }
-            
             var hms = userRow[9].split(':')
+            var lastLogout = if (userRow[7] != "LOGGED IN") {
+                LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("d/M/YYYY"))
+            } else {
+                "Logged in"
+            }
 
             var embed = EmbedBuilder()
                 .setTitle(this.name)
-                .addField("**#$userPlace:** ${userRow[1]} ${userRow[2]}", "${hms[0].toInt()}h ${hms[1].toInt()}m ${hms[2].toInt()}s", false)
-                .setDescription(lastLoggin)
+                .addField("**#$userPlace:** ${userRow[1]} ${userRow[2]}", "${hms[0]}h, ${hms[1]}m, ${hms[2]}s", false)
+                .addField("${lastLogout}", "", false)
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
@@ -58,26 +59,33 @@ object AttendanceCommand : Command(
             .get(SheetsConstants.falcontimeSheet, "Current!A2:L1000")
             .execute()
 
-        val values: List<List<String>> = data.getValues() as List<List<String>>
+        var values = data.getValues() as MutableList<MutableList<String>>
 
         if (values == null || values.isEmpty()) {
             return listOf()
         } else {
-            val comparator = Comparator<List<String>> { a, b ->
-                val hmsA = a[9].split(':')
-                val hmsB = b[9].split(':')
-                val aNum = try {
-                    hmsA[0].toInt() * 3600 + hmsA[1].toInt() * 60 + hmsA[2].toInt()
-                } catch (e: Exception) { 0 }
-                val bNum = try {
-                    hmsB[0].toInt() * 3600 + hmsB[1].toInt() * 60 + hmsB[2].toInt()
-                } catch (e: Exception) { 0 }
+            for (row in values) {
+                if (row[7] != "LOGGED IN") {
+                    var totalTime = row[9].split(':')
 
-                when {
-                    aNum > bNum -> -1
-                    aNum < bNum -> 1
-                    else -> 0
+                    var lastLogin = LocalDateTime.parse(row[6])
+                    var currentTime = LocalDateTime.now()
+
+                    var hours = lastLogin.until(currentTime, ChronoUnit.HOURS)
+                    currentTime.plusHours(hours)
+                    var minutes = lastLogin.until(currentTime, ChronoUnit.MINUTES)
+                    currentTime.plusMinutes(hours)
+                    var seconds = lastLogin.until(currentTime, ChronoUnit.SECONDS)
+
+                    row[9] = "${totalTime[0].toInt() + hours}:${totalTime[1].toInt()}:${totalTime[2].toInt()}"
                 }
+            }
+
+            val comparator = Comparator<List<String>> { a, b ->
+                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+                val hmsA = LocalDateTime.parse(a[9], formatter)
+                val hmsB = LocalDateTime.parse(b[9], formatter)
+                hmsA.compareTo(hmsB)
             }
 
             return values.sortedWith(comparator)
