@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.JDAService
 import services.jda.commands.Command
-import services.jda.commands.CommandPermssionLevel
+import services.jda.commands.CommandPermissionLevel
 
 object HelpCommand: Command(
     name = "Help",
@@ -22,7 +22,7 @@ object HelpCommand: Command(
                 .setColor(ColorConstants.FALCON_MAROON)
 
             JDAService.commands.forEach { command ->
-                if (command.permissionLevel == CommandPermssionLevel.ALL) {
+                if (command.permissionLevel == CommandPermissionLevel.ALL) {
                     embed.addField(
                         command.name,
                         command.ids.take(2).fold("", { acc, s -> "$acc`!$s` " }).removeSuffix(" "),
@@ -34,7 +34,7 @@ object HelpCommand: Command(
             event.channel.sendMessage(embed.build()).queue()
         } else {
             var stringArgs = args.subList(1, args.count()).fold("", {acc, s -> "$acc$s "}).removeSuffix(" ").toLowerCase()
-            if (JDAService.commandIds.containsKey(stringArgs) && JDAService.commandIds[stringArgs]!!.permissionLevel == CommandPermssionLevel.ALL) {
+            if (JDAService.commandIds.containsKey(stringArgs) && JDAService.commandIds[stringArgs]!!.permissionLevel == CommandPermissionLevel.ALL) {
                 val command = JDAService.commandIds[stringArgs]!!
 
                 if (command.children.count() != 0) {

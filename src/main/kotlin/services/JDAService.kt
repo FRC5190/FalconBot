@@ -4,6 +4,7 @@ import JDAConstants
 import net.dv8tion.jda.api.JDA
 import services.jda.commands.Command
 import net.dv8tion.jda.api.JDABuilder
+import org.eclipse.jetty.util.ajax.JSON
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import org.slf4j.LoggerFactory
@@ -21,6 +22,7 @@ object JDAService {
     val logger = LoggerFactory.getLogger("Application")
 
     lateinit var service: JDA
+    lateinit var credentials: JSONObject
     var commandIds = mutableMapOf<String, Command>()
     var commands = mutableListOf<Command>()
 
@@ -30,7 +32,7 @@ object JDAService {
         val inputStream = this.javaClass.getResourceAsStream(JDAConstants.CREDENTIALS_FILE_PATH)
             ?: throw FileNotFoundException("Resource not found: " + JDAConstants.CREDENTIALS_FILE_PATH)
 
-        val credentials = JSONParser().parse(InputStreamReader(inputStream)) as JSONObject
+        credentials = JSONParser().parse(InputStreamReader(inputStream)) as JSONObject
 
         service = JDABuilder(credentials["token"] as String)
             .addEventListeners(CommandListener())

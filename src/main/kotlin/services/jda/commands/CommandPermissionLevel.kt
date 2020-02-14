@@ -1,6 +1,6 @@
 package services.jda.commands
 
-enum class CommandPermssionLevel {
+enum class CommandPermissionLevel {
     OWNER,
     ADMIN,
     ALL
