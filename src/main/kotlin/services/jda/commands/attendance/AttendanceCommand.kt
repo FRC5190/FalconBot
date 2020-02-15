@@ -32,9 +32,9 @@ object AttendanceCommand : Command(
 
         if (userId != "") {
             val userRow = leaderboard.find { row -> row[0] == userId }!!
-            val userPlace = leaderboard.indexOf(userRow)!! + 1
+            val userPlace = leaderboard.indexOf(userRow)!!
             val hms = userRow[9].split(':')
-            val lastLogout = if (userRow[7].contains("LOGGED IN ")) {
+            val lastLogout = if (!userRow[7].contains("LOGGED IN ")) {
                 LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("M/d/YYYY"))
             } else {
                 "Logged in for " + userRow[7].removePrefix("LOGGED IN ")
