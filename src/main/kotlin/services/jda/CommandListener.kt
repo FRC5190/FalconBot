@@ -20,11 +20,13 @@ class CommandListener : ListenerAdapter() {
                 .build()
 
             if (event.jda.privateChannels.any {it.id == Configuration.restartChannel}) {
-                event.jda.getPrivateChannelById(Configuration.restartChannel)!!.sendMessage(embed).queue()
+                event.jda.getPrivateChannelById(Configuration.restartChannel)!!.history
+                    .getMessageById(Configuration.restartMessage)!!.editMessage(embed).queue()
             }
 
             if (event.jda.textChannels.any {it.id == Configuration.restartChannel}) {
-                event.jda.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed).queue()
+                event.jda.getTextChannelById(Configuration.restartChannel)!!.history
+                    .getMessageById(Configuration.restartMessage)!!.editMessage(embed).queue()
             }
 
             Configuration.json.remove("restart_channel")

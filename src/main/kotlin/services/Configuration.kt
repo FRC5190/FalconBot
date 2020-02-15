@@ -12,6 +12,7 @@ object Configuration {
     lateinit var timeSheet: String
     lateinit var userSheet: String
     lateinit var restartChannel: String
+    lateinit var restartMessage: String
 
     fun load() {
         var reader = FileReader("configuration.json")
@@ -22,8 +23,10 @@ object Configuration {
         timeSheet = json["time_sheet"].toString()
         userSheet = json["user_sheet"].toString()
 
-        restartChannel = if (json.containsKey("restart_channel")) {
-            json["restart_channel"].toString()
-        } else { "" }
+        restartChannel = json["restart_channel"]?.toString()
+            ?: ""
+
+        restartMessage = json["restart_message"]?.toString()
+            ?: ""
     }
 }
