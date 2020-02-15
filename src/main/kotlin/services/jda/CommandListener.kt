@@ -19,14 +19,12 @@ class CommandListener : ListenerAdapter() {
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
-            if (event.jda.privateChannels.any {it.id == Configuration.restartChannel}) {
-                event.jda.getPrivateChannelById(Configuration.restartChannel)!!.history
-                    .getMessageById(Configuration.restartMessage)!!.editMessage(embed).queue()
+            if (event.jda.users.any {it.id == Configuration.restartChannel}) {
+                event.jda.getUserById(Configuration.restartChannel)!!.openPrivateChannel().complete().sendMessage(embed).queue()
             }
 
             if (event.jda.textChannels.any {it.id == Configuration.restartChannel}) {
-                event.jda.getTextChannelById(Configuration.restartChannel)!!.history
-                    .getMessageById(Configuration.restartMessage)!!.editMessage(embed).queue()
+                event.jda.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed).queue()
             }
 
             Configuration.json.remove("restart_channel")

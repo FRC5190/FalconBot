@@ -25,16 +25,8 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
-            var embed = EmbedBuilder()
-                .setTitle("Restarting...")
-                .setColor(ColorConstants.FALCON_MAROON)
-                .build()
-
-            var restartMessage = event.channel.sendMessage(embed).complete()
-            Configuration.json["restart_message"] = restartMessage.id
-
             if (event.channelType == ChannelType.PRIVATE) {
-                Configuration.json["restart_channel"] = event.privateChannel.id
+                Configuration.json["restart_channel"] = event.author.id
             }
 
             if (event.channelType == ChannelType.TEXT) {
