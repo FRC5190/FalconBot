@@ -14,11 +14,9 @@ object Configuration {
     lateinit var restartChannel: String
 
     fun load() {
-        var parser = JSONParser()
         var reader = FileReader("configuration.json")
-        var obj = parser.parse(reader)
-        var list = obj as JSONArray
-        json = list.get(0) as JSONObject
+        var obj = JSONParser().parse(reader)
+        json = obj as JSONObject
 
         appName = json["app_name"].toString()
         jdaPrefix = json["jda_prefix"].toString()
