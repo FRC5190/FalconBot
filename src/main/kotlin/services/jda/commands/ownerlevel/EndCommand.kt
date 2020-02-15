@@ -22,10 +22,9 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
-            var json = JSONArray()
-            json.add(JSONObject().put("test", "yay!"))
-            var file = FileWriter("Configuration.json")
-            file.write(json.toJSONString())
+            var json = JSONObject().put("test", "yay!")
+            var file = FileWriter("configuration.json")
+            file.write(json.toString())
             file.flush()
 
             JDAService.service.shutdownNow()
