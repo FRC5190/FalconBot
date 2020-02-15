@@ -79,13 +79,7 @@ object AttendanceCommand : Command(
 
                     totalTime.plusSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
 
-                    val hours = totalTime.toHours()
-                    totalTime.minusHours(hours)
-                    val minutes = totalTime.toMinutes()
-                    totalTime.minusMinutes(minutes)
-                    val seconds = totalTime.seconds
-
-                    row[9] = "${hours}:${minutes}:${seconds}"
+                    row[9] = String.format("%d:%02d:%02d", totalTime.seconds / 3600, (totalTime.seconds % 3600) / 60, (totalTime.seconds % 60));
                 }
             }
 
