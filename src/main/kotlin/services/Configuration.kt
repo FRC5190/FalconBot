@@ -13,6 +13,7 @@ object Configuration {
     lateinit var jdaPrefix: String
     lateinit var jdaToken: String
     lateinit var sheets: Map<String, String>
+    lateinit var links: Map<String, String>
     lateinit var owners: List<String>
 
     fun load() {
@@ -23,6 +24,7 @@ object Configuration {
         jdaPrefix = json["jda_prefix"] as String
         jdaToken = json["jda_token"] as String
         sheets = json["sheets"] as Map<String, String>
+        links = json["links"] as Map<String, String>
         owners = json["owners"] as List<String>
     }
 

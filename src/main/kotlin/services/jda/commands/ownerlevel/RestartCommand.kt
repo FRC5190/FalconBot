@@ -12,9 +12,9 @@ import services.jda.commands.CommandPermissionLevel
 import java.io.FileWriter
 
 
-object EndCommand : Command(
+object RestartCommand : Command(
     permissionLevel = CommandPermissionLevel.OWNER,
-    name = "End",
+    name = "Restart",
     description = "Updates bot.",
     ids = listOf(
         "end",
