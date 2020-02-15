@@ -19,7 +19,7 @@ object RegisterCommand : Command(
             .setDescription("This command has not been implemented.\n" +
                     "Use `${Configuration.jdaPrefix}register legacy [FalconTime ID]` to link a FalconTime account and a Discord account. " +
                     "You can use the command in a private message if you don't want other members to know your ID.")
-            .setFooter("Ex: `${Configuration.jdaPrefix}register legacy 9195555555`")
+            .setFooter("Example: ${Configuration.jdaPrefix}register legacy 9195555555")
             .setColor(ColorConstants.FALCON_MAROON)
 
         event.channel.sendMessage(embed.build()).queue()

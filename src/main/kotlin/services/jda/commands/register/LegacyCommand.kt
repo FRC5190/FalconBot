@@ -45,7 +45,7 @@ object LegacyCommand : Command(
                     var embed = EmbedBuilder()
                         .setTitle("Error")
                         .setDescription("A FalconTime account was not found under that id.")
-                        .setFooter("Example usage: `${Configuration.jdaPrefix}register legacy 9195555555`")
+                        .setFooter("Example: ${Configuration.jdaPrefix}register legacy 9195555555")
                         .setColor(ColorConstants.FALCON_MAROON)
                         .build()
 
