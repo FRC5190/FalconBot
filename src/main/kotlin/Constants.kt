@@ -13,7 +13,3 @@ object SheetsConstants {
     val JSON_FACTORY = JacksonFactory.getDefaultInstance()
     val SCOPES = listOf<String>(SheetsScopes.SPREADSHEETS)
 }
-
-object JDAConstants {
-    const val CREDENTIALS_FILE_PATH = "/jdacredentials.json"
-}

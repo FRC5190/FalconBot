@@ -6,31 +6,33 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
 import services.Configuration
 import services.JDAService
+import java.io.File
 import java.io.FileWriter
 
 class CommandListener : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
-        if (Configuration.restartChannel != "") {
+        if (File("temp.json").exists()) {
             var embed = EmbedBuilder()
                 .setTitle("Restarted!")
                 .setDescription("Bot was restarted from this channel.")
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
-            if (event.jda.users.any {it.id == Configuration.restartChannel}) {
-                event.jda.getUserById(Configuration.restartChannel)!!.openPrivateChannel().complete().sendMessage(embed).queue()
+            var channel = (JSONParser().parse(File("temp.json").readText()) as JSONObject)["restart_channel"] as String
+
+            if (event.jda.users.any {it.id == channel}) {
+                event.jda.getUserById(channel)!!.openPrivateChannel().complete().sendMessage(embed).queue()
             }
 
-            if (event.jda.textChannels.any {it.id == Configuration.restartChannel}) {
-                event.jda.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed).queue()
+            if (event.jda.textChannels.any {it.id == channel}) {
+                event.jda.getTextChannelById(channel)!!.sendMessage(embed).queue()
             }
 
-            Configuration.json.remove("restart_channel")
-            var file = FileWriter("configuration.json")
-            file.write(Configuration.json.toJSONString())
-            file.flush()
+            File("temp.json").delete()
         }
     }
 

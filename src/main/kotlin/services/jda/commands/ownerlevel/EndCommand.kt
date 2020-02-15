@@ -25,17 +25,19 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
+            var temp = JSONObject()
+
             if (event.channelType == ChannelType.PRIVATE) {
-                Configuration.json["restart_channel"] = event.author.id
+                temp["restart_channel"] = event.author.id
+                var file = FileWriter("temp.json")
+                file.write(temp.toJSONString())
+                file.flush()
+            }else if (event.channelType == ChannelType.TEXT) {
+                temp["restart_channel"] = event.textChannel.id
+                var file = FileWriter("temp.json")
+                file.write(temp.toJSONString())
+                file.flush()
             }
-
-            if (event.channelType == ChannelType.TEXT) {
-                Configuration.json["restart_channel"] = event.textChannel.id
-            }
-
-            var file = FileWriter("configuration.json")
-            file.write(Configuration.json.toJSONString())
-            file.flush()
 
             JDAService.service.shutdownNow()
             System.exit(0)

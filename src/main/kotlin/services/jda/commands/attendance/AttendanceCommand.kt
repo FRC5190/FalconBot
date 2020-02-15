@@ -23,7 +23,7 @@ object AttendanceCommand : Command(
 ){
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         val userData = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.userSheet, "Sheet1!A2:B1000")
+            .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
             .execute()
 
         val users = userData.getValues() as List<List<String>>
@@ -59,7 +59,7 @@ object AttendanceCommand : Command(
 
     fun getLeaderboard(): List<List<String>> {
         val data = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.timeSheet, "Current!A2:L1000")
+            .get(Configuration.sheets["times"], "Current!A2:L1000")
             .execute()
 
         val values = data.getValues() as MutableList<MutableList<String>>

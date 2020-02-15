@@ -18,7 +18,7 @@ object LegacyCommand : Command(
             event.channel.sendMessage("No FalconTime ID was provided.").queue()
         } else {
             val data = GoogleSheets.service.spreadsheets().values()
-                .get(Configuration.userSheet, "Sheet1!A2:B1000")
+                .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
                 .execute()
 
             val values = data.getValues()
@@ -27,7 +27,7 @@ object LegacyCommand : Command(
                 event.channel.sendMessage("You are already registered!").queue()
             } else {
                 val userValues = GoogleSheets.service.spreadsheets().values()
-                    .get(Configuration.timeSheet, "Current!A2:J1000")
+                    .get(Configuration.sheets["times"], "Current!A2:J1000")
                     .execute()
                     .getValues()
 
@@ -35,7 +35,7 @@ object LegacyCommand : Command(
                     values.add(listOf(args[2], event.author.id))
                     data.setValues(values)
                     GoogleSheets.service.spreadsheets().values()
-                        .update(Configuration.userSheet, "Sheet1!A2:B1000", data)
+                        .update(Configuration.sheets["users"], "Sheet1!A2:B1000", data)
                         .setValueInputOption("RAW")
                         .execute()
 
