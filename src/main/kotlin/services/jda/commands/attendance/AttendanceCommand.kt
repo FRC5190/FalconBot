@@ -34,10 +34,10 @@ object AttendanceCommand : Command(
             val userRow = leaderboard.find { row -> row[0] == userId }!!
             val userPlace = leaderboard.indexOf(userRow)!! + 1
             val hms = userRow[9].split(':')
-            val lastLogout = if (userRow[7] != "LOGGED IN") {
-                LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("d/M/YYYY"))
+            val lastLogout = if (userRow[7].contains("LOGGED IN ")) {
+                LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("M/d/YYYY"))
             } else {
-                "Logged in"
+                "Logged in for " + userRow[7].removePrefix("LOGGED IN ")
             }
 
             val embed = EmbedBuilder()
@@ -76,11 +76,12 @@ object AttendanceCommand : Command(
                         .plusMinutes(timeParts[1].toLong())
                         .plusSeconds(timeParts[2].toLong())
 
-                    val loginSeconds = lastLogin.until(currentTime, ChronoUnit.SECONDS)
-                    if (loginSeconds < 50400) {
-                        totalTime = totalTime.plusSeconds(loginSeconds)
+                    val loginTime = Duration.ofSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
+                    if (loginTime.toHours() < 14) {
+                        totalTime = totalTime.plus(loginTime)
                     }
 
+                    row[7] = String.format("LOGGED IN %dh, %02dm, %02ds", loginTime.seconds / 3600, (loginTime.seconds % 3600) / 60, (loginTime.seconds % 60))
                     row[9] = String.format("%d:%02d:%02d", totalTime.seconds / 3600, (totalTime.seconds % 3600) / 60, (totalTime.seconds % 60));
                 }
             }
