@@ -21,7 +21,7 @@ class CommandListener : ListenerAdapter() {
                 .setDescription("Bot was restarted from this channel.")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            JDAService.service.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed.build()).queue()
+            event.jda.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed.build()).queue()
 
             Configuration.json.remove("restart_channel")
             var file = FileWriter("configuration.json")
