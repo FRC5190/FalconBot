@@ -1,5 +1,6 @@
 package services.jda.commands.register
 
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.Configuration
 import services.GoogleSheets
@@ -41,7 +42,14 @@ object LegacyCommand : Command(
 
                     event.channel.sendMessage("FalconTime and Discord account linked!").queue()
                 } else {
-                    event.channel.sendMessage("A FalconTime account was not found under that id.").queue()
+                    var embed = EmbedBuilder()
+                        .setTitle("Error")
+                        .setDescription("A FalconTime account was not found under that id.")
+                        .setFooter("Example usage: `${Configuration.jdaPrefix}register legacy 9195555555`")
+                        .setColor(ColorConstants.FALCON_MAROON)
+                        .build()
+
+                    event.channel.sendMessage(embed).queue()
                 }
             }
         }

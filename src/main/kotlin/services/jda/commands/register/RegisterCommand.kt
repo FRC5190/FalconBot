@@ -16,7 +16,10 @@ object RegisterCommand : Command(
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         val embed = EmbedBuilder()
             .setTitle(this.name)
-            .setDescription("This command has not been implemented.\nUse `${Configuration.jdaPrefix}register legacy [FalconTime ID]` to link a FalconTime account and a Discord account.")
+            .setDescription("This command has not been implemented.\n" +
+                    "Use `${Configuration.jdaPrefix}register legacy [FalconTime ID]` to link a FalconTime account and a Discord account. " +
+                    "You can use the command in a private message if you don't want other members to know your ID.")
+            .setFooter("Ex: `${Configuration.jdaPrefix}register legacy 9195555555`")
             .setColor(ColorConstants.FALCON_MAROON)
 
         event.channel.sendMessage(embed.build()).queue()

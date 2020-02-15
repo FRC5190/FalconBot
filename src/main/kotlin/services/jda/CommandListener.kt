@@ -12,6 +12,7 @@ import services.Configuration
 import services.JDAService
 import java.io.File
 import java.io.FileWriter
+import java.time.LocalDateTime
 
 class CommandListener : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
@@ -58,8 +59,8 @@ class CommandListener : ListenerAdapter() {
             }
 
             var stringCommand = content.take(i).fold("", {acc, s -> "$acc$s "}).removeSuffix(" ")
-            JDAService.commandIds[stringCommand]
-                ?.execute(event, content) ?: continue
+            JDAService.commandIds[stringCommand]?.execute(event, content) ?: continue
+            println("${LocalDateTime.now()}: ${event.author.name} executed ${JDAService.commandIds[stringCommand]!!.name}")
             break
         }
     }
