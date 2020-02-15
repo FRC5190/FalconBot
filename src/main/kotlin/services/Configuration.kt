@@ -10,6 +10,7 @@ object Configuration {
     lateinit var json: JSONObject
 
     lateinit var appName: String
+    lateinit var appVersion: String
     lateinit var jdaPrefix: String
     lateinit var jdaToken: String
     lateinit var sheets: Map<String, String>
@@ -21,6 +22,7 @@ object Configuration {
         json = JSONParser().parse(file.readText()) as JSONObject
 
         appName = json["app_name"] as String
+        appVersion = json["app_version"] as String
         jdaPrefix = json["jda_prefix"] as String
         jdaToken = json["jda_token"] as String
         sheets = json["sheets"] as Map<String, String>

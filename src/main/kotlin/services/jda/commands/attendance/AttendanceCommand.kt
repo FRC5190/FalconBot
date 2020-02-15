@@ -50,8 +50,8 @@ object AttendanceCommand : Command(
             event.channel.sendMessage(embed.build()).queue()
         } else {
             event.channel.sendMessage("User not found.\n" +
-                        "Use `!register` to register a new FalconTime account.\n" +
-                        "Use `!register legacy [FalconTime ID]` if you already have a FalconTime account.\n" +
+                        "Use `${Configuration.jdaPrefix}register` to register a new FalconTime account.\n" +
+                        "Use `${Configuration.jdaPrefix}register legacy [FalconTime ID]` if you already have a FalconTime account.\n" +
                         "Registration can be completed in a private dm with the bot."
             ).queue()
         }

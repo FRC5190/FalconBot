@@ -2,6 +2,7 @@ package services.jda.commands.help
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import services.Configuration
 import services.JDAService
 import services.jda.commands.Command
 import services.jda.commands.CommandPermissionLevel
@@ -19,14 +20,14 @@ object HelpCommand: Command(
         if (args.size == 1) {
             val embed = EmbedBuilder()
                 .setTitle("**Help**")
-                .setDescription("Type `!help [command]` for more information on a specific command.\nCommands also work in private messages with the bot.")
+                .setDescription("Type `${Configuration.jdaPrefix}help [command]` for more information on a specific command.\nCommands also work in private messages with the bot.")
                 .setColor(ColorConstants.FALCON_MAROON)
 
             JDAService.commands.forEach { command ->
                 if (command.permissionLevel == CommandPermissionLevel.ALL) {
                     embed.addField(
                         command.name,
-                        command.ids.take(2).fold("", { acc, s -> "$acc`!$s` " }).removeSuffix(" "),
+                        command.ids.take(2).fold("", { acc, s -> "$acc`${Configuration.jdaPrefix}$s` " }).removeSuffix(" "),
                         true
                     )
                 }
@@ -44,7 +45,7 @@ object HelpCommand: Command(
                         .setDescription(command.description)
                         .setColor(ColorConstants.FALCON_MAROON)
                         .addField(
-                            command.ids.fold("", { acc, s -> "$acc`!$s` " }).removeSuffix(" "),
+                            command.ids.fold("", { acc, s -> "$acc`${Configuration.jdaPrefix}$s` " }).removeSuffix(" "),
                             "**~~---------------------------------------------------~~**\n**__Subcommands:__**",
                             false
                         )

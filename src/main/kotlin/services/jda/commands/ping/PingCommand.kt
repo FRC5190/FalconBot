@@ -2,6 +2,7 @@ package services.jda.commands.ping
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import services.Configuration
 import services.jda.commands.Command
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -11,7 +12,8 @@ object PingCommand : Command(
     description = "Gets the response time of the bot.",
     ids = listOf(
         "ping",
-        "uptime"
+        "uptime",
+        "about"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
@@ -28,9 +30,13 @@ object PingCommand : Command(
 
         val embed = EmbedBuilder()
             .setTitle("Pong!")
-            .addField("Uptime", "${days}d, ${hours}h, ${minutes}m, ${seconds}s", false)
-            .addField("Gateway Latency", "${event.jda.gatewayPing}ms", false)
-            .addField("REST Latency", "${event.jda.restPing.complete()}ms", false)
+            .setDescription("Type `${Configuration.jdaPrefix}help` for help.")
+            .addField("Version", "${Configuration.appVersion}", true)
+            .addField("Uptime", "${days}d, ${hours}h, ${minutes}m, ${seconds}s", true)
+            .addField("","",true)
+            .addField("Gateway Latency", "${event.jda.gatewayPing}ms", true)
+            .addField("REST Latency", "${event.jda.restPing.complete()}ms", true)
+            .addField("","",true)
             .setColor(ColorConstants.FALCON_MAROON)
 
         event.channel.sendMessage(embed.build()).queue()
