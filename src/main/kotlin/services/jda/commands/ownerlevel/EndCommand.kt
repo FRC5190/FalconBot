@@ -23,6 +23,7 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
+            println("RESTART CHANNEL: " + event.channel.id)
             Configuration.json["restart_channel"] = event.channel.id
             var file = FileWriter("configuration.json")
             file.write(Configuration.json.toJSONString())
