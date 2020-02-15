@@ -26,24 +26,24 @@ object AttendanceCommand : Command(
             .execute()
 
         val users = userData.getValues() as List<List<String>>
-        var leaderboard = getLeaderboard()
+        val leaderboard = getLeaderboard()
 
-        var userId: String = users.find { user -> user[1] == event.author.id }?.get(0) ?: ""
+        val userId: String = users.find { user -> user[1] == event.author.id }?.get(0) ?: ""
 
         if (userId != "") {
-            var userRow = leaderboard.find { row -> row[0] == userId }!!
-            var userPlace = leaderboard.indexOf(userRow)!! + 1
-            var hms = userRow[9].split(':')
-            var lastLogout = if (userRow[7] != "LOGGED IN") {
+            val userRow = leaderboard.find { row -> row[0] == userId }!!
+            val userPlace = leaderboard.indexOf(userRow)!! + 1
+            val hms = userRow[9].split(':')
+            val lastLogout = if (userRow[7] != "LOGGED IN") {
                 LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("d/M/YYYY"))
             } else {
                 "Logged in"
             }
 
-            var embed = EmbedBuilder()
+            val embed = EmbedBuilder()
                 .setTitle(this.name)
                 .addField("**#$userPlace:** ${userRow[1]} ${userRow[2]}", "${hms[0]}h, ${hms[1]}m, ${hms[2]}s", false)
-                .addField("${lastLogout}", "", false)
+                .addField(lastLogout, "", false)
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).queue()
@@ -61,29 +61,29 @@ object AttendanceCommand : Command(
             .get(SheetsConstants.falcontimeSheet, "Current!A2:L1000")
             .execute()
 
-        var values = data.getValues() as MutableList<MutableList<String>>
+        val values = data.getValues() as MutableList<MutableList<String>>
 
-        if (values == null || values.isEmpty()) {
+        if (values.isEmpty()) {
             return listOf()
         } else {
             for (row in values) {
                 if (row[7] == "LOGGED IN" && row[9] != "") {
 
-                    var timeParts = row[9].split(':')
-                    var lastLogin = LocalDateTime.parse(row[6])
-                    var currentTime = LocalDateTime.now()
-                    var totalTime = Duration.ofHours(timeParts[0].toLong())
+                    val timeParts = row[9].split(':')
+                    val lastLogin = LocalDateTime.parse(row[6])
+                    val currentTime = LocalDateTime.now()
+                    val totalTime = Duration.ofHours(timeParts[0].toLong())
 
                     totalTime.plusMinutes(timeParts[1].toLong())
                     totalTime.plusSeconds(timeParts[2].toLong())
 
                     totalTime.plusSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
 
-                    var hours = totalTime.toHours()
+                    val hours = totalTime.toHours()
                     totalTime.minusHours(hours)
-                    var minutes = totalTime.toMinutes()
+                    val minutes = totalTime.toMinutes()
                     totalTime.minusMinutes(minutes)
-                    var seconds = totalTime.seconds
+                    val seconds = totalTime.seconds
 
                     row[9] = "${hours}:${minutes}:${seconds}"
                 }
