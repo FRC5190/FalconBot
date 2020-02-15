@@ -1,6 +1,7 @@
 package services.jda.commands.register
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import services.Configuration
 import services.GoogleSheets
 import services.jda.commands.Command
 
@@ -17,7 +18,7 @@ object LegacyCommand : Command(
             event.channel.sendMessage("No FalconTime ID was provided.").queue()
         } else {
             val data = GoogleSheets.service.spreadsheets().values()
-                .get(SheetsConstants.falconusersSheet, "Sheet1!A2:B1000")
+                .get(Configuration.userSheet, "Sheet1!A2:B1000")
                 .execute()
 
             val values = data.getValues()
@@ -26,7 +27,7 @@ object LegacyCommand : Command(
                 event.channel.sendMessage("You are already registered!").queue()
             } else {
                 val userValues = GoogleSheets.service.spreadsheets().values()
-                    .get(SheetsConstants.falcontimeSheet, "Current!A2:J1000")
+                    .get(Configuration.timeSheet, "Current!A2:J1000")
                     .execute()
                     .getValues()
 
@@ -34,7 +35,7 @@ object LegacyCommand : Command(
                     values.add(listOf(args[2], event.author.id))
                     data.setValues(values)
                     GoogleSheets.service.spreadsheets().values()
-                        .update(SheetsConstants.falconusersSheet, "Sheet1!A2:B1000", data)
+                        .update(Configuration.userSheet, "Sheet1!A2:B1000", data)
                         .setValueInputOption("RAW")
                         .execute()
 

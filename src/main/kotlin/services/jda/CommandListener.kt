@@ -7,36 +7,42 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import services.Configuration
 import services.JDAService
 import java.io.File
 import java.io.FileWriter
 
 class CommandListener : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
-        if (false) {
+        if (Configuration.restartChannel != "") {
             var embed = EmbedBuilder()
                 .setTitle("Restarted!")
                 .setDescription("Bot was restarted from this channel.")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            //restartChannel.sendMessage(embed.build()).queue()
+            JDAService.service.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed.build()).queue()
+
+            Configuration.json.remove("restart_channel")
+            var file = FileWriter("configuration.json")
+            file.write(Configuration.json.toString())
+            file.flush()
         }
     }
 
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
-        if (!event.author.isBot && event.message.contentRaw.startsWith(JDAConstants.kPrefix)) {
+        if (!event.author.isBot && event.message.contentRaw.startsWith(Configuration.jdaPrefix)) {
             onGenericCommandReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
         }
     }
 
     override fun onPrivateMessageReceived(event: PrivateMessageReceivedEvent) {
-        if (!event.author.isBot && event.message.contentRaw.startsWith(JDAConstants.kPrefix)) {
+        if (!event.author.isBot && event.message.contentRaw.startsWith(Configuration.jdaPrefix)) {
             onGenericCommandReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
         }
     }
 
     private fun onGenericCommandReceived(event: MessageReceivedEvent){
-        val content = event.message.contentRaw.removePrefix(JDAConstants.kPrefix.toString()).toLowerCase().split(' ')
+        val content = event.message.contentRaw.removePrefix(Configuration.jdaPrefix).toLowerCase().split(' ')
 
         for (i in content.count() downTo  0) {
             if (i == 0) {

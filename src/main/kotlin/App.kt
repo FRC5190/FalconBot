@@ -1,3 +1,4 @@
+import services.Configuration
 import services.JDAService
 import services.GoogleSheets
 import java.time.LocalDateTime
@@ -6,6 +7,7 @@ object Application {
     lateinit var startTime: LocalDateTime
 
     fun start() {
+        Configuration.load()
         JDAService.start()
         GoogleSheets.start()
 

@@ -3,6 +3,7 @@ package services.jda.commands.ownerlevel
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import services.Configuration
 import services.JDAService
 import services.jda.commands.Command
 import services.jda.commands.CommandPermissionLevel
@@ -22,10 +23,9 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
-            var json = JSONObject()
-            json.put("test", "nice")
+            Configuration.json.put("restart_channel", event.channel)
             var file = FileWriter("configuration.json")
-            file.write(json.toString())
+            file.write(Configuration.json.toString())
             file.flush()
 
             JDAService.service.shutdownNow()
