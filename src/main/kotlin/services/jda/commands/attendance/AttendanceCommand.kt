@@ -90,11 +90,24 @@ object AttendanceCommand : Command(
             }
 
             val comparator = Comparator<List<String>> { a, b ->
-                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-                val hmsA = if (a[9] == "") { LocalTime.parse("00:00:00", formatter) }
-                else { LocalTime.parse(a[9], formatter) }
-                val hmsB = if (b[9] == "") { LocalTime.parse("00:00:00", formatter) }
-                else { LocalTime.parse(b[9], formatter) }
+                val aPart = a[9].split(':')
+                val bPart = b[9].split(':')
+
+                val hmsA = if (a[9] == "") { Duration.ofSeconds(0) }
+                else { {
+                    val duration = Duration.ofHours(aPart[0].toLong())
+                    duration.plusMinutes(aPart[1].toLong())
+                    duration.plusSeconds(aPart[2].toLong())
+                }.invoke() }
+
+                val hmsB = if (b[9] == "") { Duration.ofSeconds(0) }
+                else { {
+                    val duration = Duration.ofHours(aPart[1].toLong())
+                    duration.plusMinutes(bPart[1].toLong())
+                    duration.plusSeconds(bPart[2].toLong())
+                    duration
+                }.invoke() }
+                
                 hmsA.compareTo(hmsB)
             }
 
