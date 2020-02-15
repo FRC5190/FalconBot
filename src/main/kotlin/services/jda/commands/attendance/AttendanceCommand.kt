@@ -102,12 +102,12 @@ object AttendanceCommand : Command(
 
                 val hmsB = if (b[9] == "") { Duration.ofSeconds(0) }
                 else { {
-                    val duration = Duration.ofHours(aPart[1].toLong())
+                    val duration = Duration.ofHours(bPart[0].toLong())
                     duration.plusMinutes(bPart[1].toLong())
                     duration.plusSeconds(bPart[2].toLong())
                     duration
                 }.invoke() }
-                
+
                 hmsA.compareTo(hmsB)
             }
 
