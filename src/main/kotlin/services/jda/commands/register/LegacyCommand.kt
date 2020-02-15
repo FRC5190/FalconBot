@@ -16,7 +16,14 @@ object LegacyCommand : Command(
 ){
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (args.count() == 2) {
-            event.channel.sendMessage("No FalconTime ID was provided.").queue()
+            var embed = EmbedBuilder()
+                .setTitle("Error")
+                .setDescription("Invalid FalconTime ID specified.")
+                .setFooter("Example: ${Configuration.jdaPrefix}register legacy 9195555555")
+                .setColor(ColorConstants.FALCON_MAROON)
+                .build()
+
+            event.channel.sendMessage(embed).queue()
         } else {
             val data = GoogleSheets.service.spreadsheets().values()
                 .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
@@ -44,7 +51,7 @@ object LegacyCommand : Command(
                 } else {
                     var embed = EmbedBuilder()
                         .setTitle("Error")
-                        .setDescription("A FalconTime account was not found under that id.")
+                        .setDescription("Invalid FalconTime ID specified.")
                         .setFooter("Example: ${Configuration.jdaPrefix}register legacy 9195555555")
                         .setColor(ColorConstants.FALCON_MAROON)
                         .build()
