@@ -15,8 +15,8 @@ object Configuration {
 
     fun load() {
         var reader = FileReader("configuration.json")
-        var obj = JSONParser().parse(reader)
-        json = obj as JSONObject
+        var obj = JSONParser().parse(reader) as JSONArray
+        json = obj[0] as JSONObject
 
         appName = json["app_name"].toString()
         jdaPrefix = json["jda_prefix"].toString()
