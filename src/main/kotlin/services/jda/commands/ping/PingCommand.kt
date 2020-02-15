@@ -8,12 +8,12 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 object PingCommand : Command(
-    name = "Ping",
+    name = "About",
     description = "Gets the response time of the bot.",
     ids = listOf(
-        "ping",
+        "about",
         "uptime",
-        "about"
+        "ping"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {

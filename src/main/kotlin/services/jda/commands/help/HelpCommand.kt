@@ -46,7 +46,7 @@ object HelpCommand: Command(
                         .setColor(ColorConstants.FALCON_MAROON)
                         .addField(
                             command.ids.fold("", { acc, s -> "$acc`${Configuration.jdaPrefix}$s` " }).removeSuffix(" "),
-                            "**~~---------------------------------------------------~~**\n**__Subcommands:__**",
+                            "**~~---------------------------------------------------~~**\nSubcommands:",
                             false
                         )
 
@@ -66,14 +66,14 @@ object HelpCommand: Command(
                         .setColor(ColorConstants.FALCON_MAROON)
                         .addField(
                             command.ids.fold("", { acc, s -> "$acc`!$s` " }).removeSuffix(" "),
-                            "**~~---------------------------------------------------~~**",
+                            "",
                             false
                         )
 
                     event.channel.sendMessage(embed.build()).queue()
                 }
             } else {
-                event.channel.sendMessage("Unrecognized command `!${stringArgs}`")
+                event.channel.sendMessage("Unrecognized command `${Configuration.jdaPrefix}${stringArgs}`")
             }
         }
     }
