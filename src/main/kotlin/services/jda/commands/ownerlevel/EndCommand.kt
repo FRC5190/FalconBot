@@ -24,7 +24,7 @@ object EndCommand : Command(
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        if (event.author.id == "277200664424218634") {
+        if (Configuration.owners.any { it == event.author.id }) {
             var temp = JSONObject()
 
             if (event.channelType == ChannelType.PRIVATE) {
