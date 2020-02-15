@@ -108,7 +108,7 @@ object AttendanceCommand : Command(
                     duration
                 }.invoke() }
 
-                hmsA.compareTo(hmsB)
+                hmsB.compareTo(hmsA)
             }
 
             return values.sortedWith(comparator)
