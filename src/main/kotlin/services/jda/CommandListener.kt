@@ -25,9 +25,7 @@ class CommandListener : ListenerAdapter() {
 
             Configuration.json.remove("restart_channel")
             var file = FileWriter("configuration.json")
-            var content = JSONArray()
-            content.add(Configuration.json)
-            file.write(content.toJSONString())
+            file.write(Configuration.json.toJSONString())
             file.flush()
         }
     }

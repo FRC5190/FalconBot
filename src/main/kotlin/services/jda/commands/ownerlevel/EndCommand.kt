@@ -23,11 +23,9 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
-            Configuration.json.put("restart_channel", event.channel)
+            Configuration.json["restart_channel"] = event.channel
             var file = FileWriter("configuration.json")
-            var content = JSONArray()
-            content.add(Configuration.json)
-            file.write(content.toJSONString())
+            file.write(Configuration.json.toJSONString())
             file.flush()
 
             JDAService.service.shutdownNow()
