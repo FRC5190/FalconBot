@@ -15,15 +15,16 @@ object PingCommand : Command(
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
+        var startTime = Application.startTime
         var currentTime = LocalDateTime.now()
 
-        var days = Application.startTime.until(currentTime, ChronoUnit.DAYS)
-        currentTime.minusDays(days)
-        var hours = Application.startTime.until(currentTime, ChronoUnit.HOURS)
-        currentTime.minusHours(hours)
-        var minutes = Application.startTime.until(currentTime, ChronoUnit.MINUTES)
-        currentTime.minusMinutes(minutes)
-        var seconds = Application.startTime.until(currentTime, ChronoUnit.SECONDS)
+        var days = startTime.until(currentTime, ChronoUnit.DAYS)
+        startTime.plusDays(days)
+        var hours = startTime.until(currentTime, ChronoUnit.HOURS)
+        currentTime.plusHours(hours)
+        var minutes = startTime.until(currentTime, ChronoUnit.MINUTES)
+        currentTime.plusMinutes(minutes)
+        var seconds = startTime.until(currentTime, ChronoUnit.SECONDS)
 
         val embed = EmbedBuilder()
             .setTitle("Pong!")

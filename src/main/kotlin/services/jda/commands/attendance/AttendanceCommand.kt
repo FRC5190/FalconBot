@@ -72,10 +72,10 @@ object AttendanceCommand : Command(
                     val timeParts = row[9].split(':')
                     val lastLogin = LocalDateTime.parse(row[6])
                     val currentTime = LocalDateTime.now()
-                    val totalTime = Duration.ofHours(timeParts[0].toLong())
+                    val totalTime = Duration.ofSeconds(timeParts[3].toLong())
 
-                    totalTime.plusMinutes(timeParts[1].toLong())
-                    totalTime.plusSeconds(timeParts[2].toLong())
+                    totalTime.plusMinutes(timeParts[2].toLong())
+                    totalTime.plusHours(timeParts[1].toLong())
 
                     totalTime.plusSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
 
