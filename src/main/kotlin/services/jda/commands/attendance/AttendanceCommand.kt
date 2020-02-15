@@ -72,10 +72,9 @@ object AttendanceCommand : Command(
                     val timeParts = row[9].split(':')
                     val lastLogin = LocalDateTime.parse(row[6])
                     val currentTime = LocalDateTime.now()
-                    val totalTime = Duration.ofSeconds(timeParts[2].toLong())
-
-                    totalTime.plusMinutes(timeParts[1].toLong())
-                    totalTime.plusHours(timeParts[0].toLong())
+                    val totalTime = Duration.ofHours(timeParts[0].toLong())
+                        .plusMinutes(timeParts[1].toLong())
+                        .plusSeconds(timeParts[2].toLong())
 
                     totalTime.plusSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
 
@@ -88,19 +87,10 @@ object AttendanceCommand : Command(
                 val bPart = b[9].split(':')
 
                 val hmsA = if (a[9] == "") { Duration.ofSeconds(0) }
-                else { {
-                    val duration = Duration.ofHours(aPart[0].toLong())
-                    duration.plusMinutes(aPart[1].toLong())
-                    duration.plusSeconds(aPart[2].toLong())
-                }.invoke() }
+                else { Duration.ofHours(aPart[0].toLong()).plusMinutes(aPart[1].toLong()).plusSeconds(aPart[2].toLong()) }
 
                 val hmsB = if (b[9] == "") { Duration.ofSeconds(0) }
-                else { {
-                    val duration = Duration.ofHours(bPart[0].toLong())
-                    duration.plusMinutes(bPart[1].toLong())
-                    duration.plusSeconds(bPart[2].toLong())
-                    duration
-                }.invoke() }
+                else { Duration.ofHours(bPart[0].toLong()).plusMinutes(bPart[1].toLong()).plusSeconds(bPart[2].toLong())}
 
                 hmsB.compareTo(hmsA)
             }
