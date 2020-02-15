@@ -10,7 +10,8 @@ object HelpCommand: Command(
     name = "Help",
     description = "Nice.",
     ids = listOf(
-        "help"
+        "help",
+        "commands"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
