@@ -1,16 +1,13 @@
 package services.jda
 
 import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.entities.MessageType
 import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import org.json.simple.JSONArray
 import services.Configuration
 import services.JDAService
-import java.io.File
 import java.io.FileWriter
 
 class CommandListener : ListenerAdapter() {
@@ -22,9 +19,13 @@ class CommandListener : ListenerAdapter() {
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
-            event.jda.getTextChannelById(Configuration.restartChannel)?.sendMessage(embed)
-                ?: event.jda.getPrivateChannelById(Configuration.restartChannel)!!.sendMessage(embed)
-                    .queue()
+            if (event.jda.privateChannels.any {it.id == Configuration.restartChannel}) {
+                event.jda.getPrivateChannelById(Configuration.restartChannel)!!.sendMessage(embed).queue()
+            }
+
+            if (event.jda.textChannels.any {it.id == Configuration.restartChannel}) {
+                event.jda.getTextChannelById(Configuration.restartChannel)!!.sendMessage(embed).queue()
+            }
 
             Configuration.json.remove("restart_channel")
             var file = FileWriter("configuration.json")
