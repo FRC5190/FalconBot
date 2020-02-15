@@ -72,10 +72,14 @@ object AttendanceCommand : Command(
                     val timeParts = row[9].split(':')
                     val lastLogin = LocalDateTime.parse(row[6])
                     val currentTime = LocalDateTime.now()
-                    val totalTime = Duration.ofHours(timeParts[0].toLong())
+                    var totalTime = Duration.ofHours(timeParts[0].toLong())
                         .plusMinutes(timeParts[1].toLong())
                         .plusSeconds(timeParts[2].toLong())
-                        .plusSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
+
+                    val loginSeconds = lastLogin.until(currentTime, ChronoUnit.SECONDS)
+                    if (loginSeconds < 50400) {
+                        totalTime = totalTime.plusSeconds(loginSeconds)
+                    }
 
                     row[9] = String.format("%d:%02d:%02d", totalTime.seconds / 3600, (totalTime.seconds % 3600) / 60, (totalTime.seconds % 60));
                 }
