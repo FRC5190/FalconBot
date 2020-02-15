@@ -22,7 +22,8 @@ object EndCommand : Command(
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (event.author.id == "277200664424218634") {
-            var json = JSONObject().put("test", "yay!")
+            var json = JSONObject()
+            json.put("test", "nice")
             var file = FileWriter("configuration.json")
             file.write(json.toString())
             file.flush()
