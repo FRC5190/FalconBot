@@ -29,7 +29,7 @@ object PingCommand : Command(
         var seconds = startTime.until(currentTime, ChronoUnit.SECONDS)
 
         val embed = EmbedBuilder()
-            .setTitle("Pong!")
+            .setTitle("About")
             .setDescription("Type `${Configuration.jdaPrefix}help` for help.")
             .addField("Version", "${Configuration.appVersion}", true)
             .addField("Uptime", "${days}d, ${hours}h, ${minutes}m, ${seconds}s", true)
