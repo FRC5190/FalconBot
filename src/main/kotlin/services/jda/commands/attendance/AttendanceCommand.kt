@@ -49,11 +49,16 @@ object AttendanceCommand : Command(
 
             event.channel.sendMessage(embed.build()).queue()
         } else {
-            event.channel.sendMessage("User not found.\n" +
+            var embed = EmbedBuilder()
+                .setTitle("Error")
+                .setDescription("User not found.\n" +
                         "Use `${Configuration.jdaPrefix}register` to register a new FalconTime account.\n" +
                         "Use `${Configuration.jdaPrefix}register legacy [FalconTime ID]` if you already have a FalconTime account.\n" +
-                        "Registration can be completed in a private dm with the bot."
-            ).queue()
+                        "Registration can be completed in a private dm with the bot.")
+                .setColor(ColorConstants.FALCON_MAROON)
+                .build()
+
+            event.channel.sendMessage(embed).queue()
         }
     }
 
