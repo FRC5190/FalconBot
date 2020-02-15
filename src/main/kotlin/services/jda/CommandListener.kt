@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import org.json.simple.JSONArray
 import services.Configuration
 import services.JDAService
 import java.io.File
@@ -24,7 +25,9 @@ class CommandListener : ListenerAdapter() {
 
             Configuration.json.remove("restart_channel")
             var file = FileWriter("configuration.json")
-            file.write(Configuration.json.toString())
+            var content = JSONArray()
+            content.add(Configuration.json)
+            file.write(content.toJSONString())
             file.flush()
         }
     }

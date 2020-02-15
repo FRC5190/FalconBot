@@ -25,7 +25,9 @@ object EndCommand : Command(
         if (event.author.id == "277200664424218634") {
             Configuration.json.put("restart_channel", event.channel)
             var file = FileWriter("configuration.json")
-            file.write(Configuration.json.toString())
+            var content = JSONArray()
+            content.add(Configuration.json)
+            file.write(content.toJSONString())
             file.flush()
 
             JDAService.service.shutdownNow()

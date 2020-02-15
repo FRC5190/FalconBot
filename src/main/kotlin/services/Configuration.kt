@@ -1,5 +1,6 @@
 package services
 
+import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.FileReader
@@ -15,7 +16,8 @@ object Configuration {
     fun load() {
         var parser = JSONParser()
         var reader = FileReader("configuration.json")
-        json = parser.parse(reader) as JSONObject
+        var obj = parser.parse(reader) as JSONArray
+        json = obj.get(0) as JSONObject
 
         appName = json["app_name"].toString()
         jdaPrefix = json["jda_prefix"].toString()
