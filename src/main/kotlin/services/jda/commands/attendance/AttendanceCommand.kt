@@ -93,11 +93,12 @@ object AttendanceCommand : Command(
 
         timeValues.forEach {timeRow ->
             val logRow = logValues.find { row -> row[0] == timeRow[0] }!!
+            println(logRow[0])
             timeRow[9] = positions.fold(Duration.ofSeconds(0)) { lastTime, dateColumn ->
-                lastTime + if (logRow[dateColumn - 1] == "") {
+                lastTime + if (logRow[dateColumn] == "") {
                     Duration.ofSeconds(0)
                 } else {
-                    logRow[dateColumn - 1].split(':').let { timePart ->
+                    logRow[dateColumn].split(':').let { timePart ->
                         Duration.ofHours(timePart[0].toLong()).plusMinutes(timePart[1].toLong()).plusSeconds(timePart[2].toLong())
                     }
                 }
