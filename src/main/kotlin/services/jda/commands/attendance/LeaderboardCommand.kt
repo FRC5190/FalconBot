@@ -6,7 +6,7 @@ import services.jda.commands.Command
 
 object LeaderboardCommand : Command(
     parent = AttendanceCommand,
-    name = "Leaderboard",
+    name = "Attendance Leaderboard",
     description = "Gets the attendance leaderboard",
     ids = listOf(
         "leaderboard",
