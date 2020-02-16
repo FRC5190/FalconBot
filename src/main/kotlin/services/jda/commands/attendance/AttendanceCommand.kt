@@ -38,7 +38,7 @@ object AttendanceCommand : Command(
         if (userId != "") {
             val userRow = leaderboard.find { row -> row[0] == userId }!!
             val userPlace = leaderboard.indexOf(userRow)!! + 1
-            val hms = userRow[9].split(':')
+            val hms = userRow[9].split(':').let { "${it[0]}h, ${it[1]}m, ${it[2]}s" }
             val lastLogout = if (!userRow[7].contains("LOGGED IN ")) {
                 LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("M/d/YYYY")) as String +
                         " for " + userRow[8].split(':').let { "${it[0]}h, ${it[1]}m, ${it[2]}s" }
@@ -48,7 +48,7 @@ object AttendanceCommand : Command(
 
             val embed = EmbedBuilder()
                 .setTitle(this.name)
-                .addField("**#$userPlace:** ${userRow[1]} ${userRow[2]}", "${hms[0]}h, ${hms[1]}m, ${hms[2]}s", false)
+                .addField("**#$userPlace:** ${userRow[1]} ${userRow[2]}", hms, false)
                 .addField(lastLogout, "", false)
                 .setColor(ColorConstants.FALCON_MAROON)
 
@@ -159,7 +159,7 @@ object AttendanceCommand : Command(
 
     override fun initSubcommands() {
         LeaderboardCommand.load()
-        WeeklyLeaderboardCommand.load()
+        WeeklyCommand.load()
         MemberCommand.load()
     }
 }

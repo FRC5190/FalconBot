@@ -8,10 +8,10 @@ import services.jda.commands.Command
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-object MemberCommand : Command(
-    parent = AttendanceCommand,
-    name = "Member Attendance",
-    description = "Gets the attendance of another member.",
+object WeeklyMemberCommand : Command(
+    parent = WeeklyCommand,
+    name = "Weekly Member Attendance",
+    description = "Gets the weekly attendance of another member.",
     ids = listOf(
         "member",
         "user",
@@ -25,12 +25,8 @@ object MemberCommand : Command(
                 .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
                 .execute()
 
-            val timeData = GoogleSheets.service.spreadsheets().values()
-                .get(Configuration.sheets["times"], "Current!A2:L1000")
-                .execute()
-
             val users = userData.getValues() as List<List<String>>
-            val leaderboard = AttendanceCommand.getLeaderboard(timeData.getValues() as MutableList<MutableList<String>>)
+            val leaderboard = AttendanceCommand.getLeaderboard(AttendanceCommand.getWeekly())
 
             val userId: String = users.find { user -> user[1] == event.message.mentionedMembers[0].id }?.get(0) ?: ""
 

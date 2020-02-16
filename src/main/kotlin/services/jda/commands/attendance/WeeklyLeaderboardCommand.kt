@@ -10,13 +10,14 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object WeeklyLeaderboardCommand : Command(
-    parent = AttendanceCommand,
+    parent = WeeklyCommand,
     name = "Weekly Leaderboard",
     description = "Gets the leaderboard for who has the most hours in the last week.",
     ids = listOf(
-        "weekly",
-        "week",
-        "w"
+        "leaderboard",
+        "lead",
+        "leader",
+        "l"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
