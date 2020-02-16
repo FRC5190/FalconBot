@@ -24,8 +24,12 @@ object MemberCommand : Command(
                 .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
                 .execute()
 
+            val timeData = GoogleSheets.service.spreadsheets().values()
+                .get(Configuration.sheets["times"], "Current!A2:L1000")
+                .execute()
+
             val users = userData.getValues() as List<List<String>>
-            val leaderboard = AttendanceCommand.getLeaderboard()
+            val leaderboard = AttendanceCommand.getLeaderboard(timeData.getValues() as MutableList<MutableList<String>>)
 
             val userId: String = users.find { user -> user[1] == event.message.mentionedMembers[0].id }?.get(0) ?: ""
 

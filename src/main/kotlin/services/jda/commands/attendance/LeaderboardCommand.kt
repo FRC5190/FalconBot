@@ -2,6 +2,8 @@ package services.jda.commands.attendance
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import services.Configuration
+import services.GoogleSheets
 import services.jda.commands.Command
 
 object LeaderboardCommand : Command(
@@ -16,7 +18,11 @@ object LeaderboardCommand : Command(
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        var leaderboard = AttendanceCommand.getLeaderboard()
+        val timeData = GoogleSheets.service.spreadsheets().values()
+            .get(Configuration.sheets["times"], "Current!A2:L1000")
+            .execute()
+
+        val leaderboard = AttendanceCommand.getLeaderboard(timeData.getValues() as MutableList<MutableList<String>>)
         var first = mutableListOf<String>()
         var last = mutableListOf<String>()
         var hours = mutableListOf<String>()

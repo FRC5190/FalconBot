@@ -26,8 +26,12 @@ object AttendanceCommand : Command(
             .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
             .execute()
 
+        val timeData = GoogleSheets.service.spreadsheets().values()
+            .get(Configuration.sheets["times"], "Current!A2:L1000")
+            .execute()
+
         val users = userData.getValues() as List<List<String>>
-        val leaderboard = getLeaderboard()
+        val leaderboard = getLeaderboard(timeData.getValues() as MutableList<MutableList<String>>)
 
         val userId: String = users.find { user -> user[1] == event.author.id }?.get(0) ?: ""
 
@@ -56,6 +60,7 @@ object AttendanceCommand : Command(
                         "Use `${Configuration.jdaPrefix}register` to register a new FalconTime account.\n" +
                         "Use `${Configuration.jdaPrefix}register legacy [FalconTime ID]` if you already have a FalconTime account.\n" +
                         "Registration can be completed in a private dm with the bot.")
+                .setFooter("Ex: ${Configuration.jdaPrefix}register legacy 9195555555")
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
@@ -63,7 +68,7 @@ object AttendanceCommand : Command(
         }
     }
 
-    fun getLeaderboard(): List<List<String>> {
+    fun getLeaderboard(values: MutableList<MutableList<String>>): List<List<String>> {
         val data = GoogleSheets.service.spreadsheets().values()
             .get(Configuration.sheets["times"], "Current!A2:L1000")
             .execute()
