@@ -96,7 +96,7 @@ object AttendanceCommand : Command(
                 lastTime + if (logRow[dateColumn - 1] == "") {
                     Duration.ofSeconds(0)
                 } else {
-                    logRow[dateColumn].split(':').let { timePart ->
+                    logRow[dateColumn - 1].split(':').let { timePart ->
                         Duration.ofHours(timePart[0].toLong()).plusMinutes(timePart[1].toLong()).plusSeconds(timePart[2].toLong())
                     }
                 }
