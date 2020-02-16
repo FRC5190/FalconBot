@@ -91,16 +91,26 @@ object AttendanceCommand : Command(
         val timeValues = timeData.getValues() as MutableList<MutableList<String>>
 
         timeValues.forEach {timeRow ->
-            val logRow = logValues.find { row -> row[0] == timeRow[0] }!!
-            timeRow[9] = positions.fold(Duration.ofSeconds(0)) { lastTime, dateColumn ->
-                lastTime + if ( dateColumn >= logRow.count() - 1 || logRow[dateColumn] == "") {
-                    Duration.ofSeconds(0)
-                } else {
-                    logRow[dateColumn].split(':').let { timePart ->
-                        Duration.ofHours(timePart[0].toLong()).plusMinutes(timePart[1].toLong()).plusSeconds(timePart[2].toLong())
+            val logRow = logValues.find { row -> row.count() != 0 && timeRow.count() != 0 && row[0] == timeRow[0] }
+            if (!logRow.isNullOrEmpty()) {
+                timeRow[9] = positions.fold(Duration.ofSeconds(0)) { lastTime, dateColumn ->
+                    lastTime + if (dateColumn > logRow.count() - 1 || logRow[dateColumn] == "") {
+                        Duration.ofSeconds(0)
+                    } else {
+                        logRow[dateColumn].split(':').let { timePart ->
+                            Duration.ofHours(timePart[0].toLong()).plusMinutes(timePart[1].toLong())
+                                .plusSeconds(timePart[2].toLong())
+                        }
                     }
+                }.let { duration ->
+                    String.format(
+                        "%d:%02d:%02d",
+                        duration.seconds / 3600,
+                        (duration.seconds % 3600) / 60,
+                        (duration.seconds % 60)
+                    )
                 }
-            }.let {duration -> String.format("%d:%02d:%02d", duration.seconds / 3600, (duration.seconds % 3600) / 60, (duration.seconds % 60))}
+            }
         }
 
         return timeValues
