@@ -117,12 +117,6 @@ object AttendanceCommand : Command(
     }
 
     fun getLeaderboard(values: MutableList<MutableList<String>>): List<List<String>> {
-        val data = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.sheets["times"], "Current!A2:L1000")
-            .execute()
-
-        val values = data.getValues() as MutableList<MutableList<String>>
-
         if (values.isEmpty()) {
             return listOf()
         } else {
