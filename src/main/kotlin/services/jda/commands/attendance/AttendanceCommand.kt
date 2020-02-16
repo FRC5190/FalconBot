@@ -155,6 +155,7 @@ object AttendanceCommand : Command(
 
     override fun initSubcommands() {
         LeaderboardCommand.load()
+        WeeklyLeaderboardCommand.load()
         MemberCommand.load()
     }
 }
