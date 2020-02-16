@@ -161,5 +161,6 @@ object AttendanceCommand : Command(
         LeaderboardCommand.load()
         WeeklyCommand.load()
         MemberCommand.load()
+        BuildspaceCommand.load()
     }
 }
