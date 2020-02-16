@@ -15,7 +15,8 @@ object MemberCommand : Command(
     ids = listOf(
         "member",
         "user",
-        "m"
+        "m",
+        "u"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
@@ -39,7 +40,7 @@ object MemberCommand : Command(
                 val hms = userRow[9].split(':')
                 val lastLogout = if (!userRow[7].contains("LOGGED IN ")) {
                     LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("M/d/YYYY")) as String +
-                            ": " + userRow[8].split(':').let { "${it[0]}h, ${it[1]}m, ${it[2]}s" }
+                            " for " + userRow[8].split(':').let { "${it[0]}h, ${it[1]}m, ${it[2]}s" }
                 } else {
                     "Logged in for " + userRow[7].removePrefix("LOGGED IN ")
                 }

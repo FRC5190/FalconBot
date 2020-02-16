@@ -41,7 +41,7 @@ object AttendanceCommand : Command(
             val hms = userRow[9].split(':')
             val lastLogout = if (!userRow[7].contains("LOGGED IN ")) {
                 LocalDateTime.parse(userRow[7]).format(DateTimeFormatter.ofPattern("M/d/YYYY")) as String +
-                        ": " + userRow[8].split(':').let { "${it[0]}h, ${it[1]}m, ${it[2]}s" }
+                        " for " + userRow[8].split(':').let { "${it[0]}h, ${it[1]}m, ${it[2]}s" }
             } else {
                 "Logged in for " + userRow[7].removePrefix("LOGGED IN ")
             }
@@ -66,6 +66,44 @@ object AttendanceCommand : Command(
 
             event.channel.sendMessage(embed).queue()
         }
+    }
+
+    fun getWeekly(): MutableList<MutableList<String>> {
+        val logData = GoogleSheets.service.spreadsheets().values()
+            .get(Configuration.sheets["times"], "Date Log!A1:ZZ1000")
+            .execute()
+
+        val logValues = logData.getValues() as MutableList<MutableList<String>>
+
+        val date = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("YYYY:MM:dd")
+        val positions: MutableList<Int> = mutableListOf()
+        for (i in 0..6) {
+            if (logValues[0].contains(date.minusDays(i.toLong()).format(formatter))) {
+                positions.add(logValues[0].indexOf(date.minusDays(i.toLong()).format(formatter)))
+            }
+        }
+
+        val timeData = GoogleSheets.service.spreadsheets().values()
+            .get(Configuration.sheets["times"], "Current!A2:L1000")
+            .execute()
+
+        val timeValues = timeData.getValues() as MutableList<MutableList<String>>
+
+        timeValues.forEach {timeRow ->
+            val logRow = logValues.find { row -> row[0] == timeRow[0] }!!
+            timeRow[9] = positions.fold(Duration.ofSeconds(0)) { lastTime, dateColumn ->
+                lastTime + if (logRow[dateColumn] == "") {
+                    Duration.ofSeconds(0)
+                } else {
+                    logRow[dateColumn].split(':').let { timePart ->
+                        Duration.ofHours(timePart[0].toLong()).plusMinutes(timePart[1].toLong()).plusSeconds(timePart[2].toLong())
+                    }
+                }
+            }.let {duration -> String.format("%d:%02d:%02d", duration.seconds / 3600, (duration.seconds % 3600) / 60, (duration.seconds % 60))}
+        }
+
+        return timeValues
     }
 
     fun getLeaderboard(values: MutableList<MutableList<String>>): List<List<String>> {
@@ -94,7 +132,7 @@ object AttendanceCommand : Command(
                     }
 
                     row[7] = String.format("LOGGED IN %dh, %02dm, %02ds", loginTime.seconds / 3600, (loginTime.seconds % 3600) / 60, (loginTime.seconds % 60))
-                    row[9] = String.format("%d:%02d:%02d", totalTime.seconds / 3600, (totalTime.seconds % 3600) / 60, (totalTime.seconds % 60));
+                    row[9] = String.format("%d:%02d:%02d", totalTime.seconds / 3600, (totalTime.seconds % 3600) / 60, (totalTime.seconds % 60))
                 }
             }
 
