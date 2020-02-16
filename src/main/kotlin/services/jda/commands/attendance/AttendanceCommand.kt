@@ -81,7 +81,6 @@ object AttendanceCommand : Command(
         for (i in 0..6) {
             if (logValues[0].contains(date.minusDays(i.toLong()).format(formatter))) {
                 positions.add(logValues[0].indexOf(date.minusDays(i.toLong()).format(formatter)))
-                println(logValues[0].indexOf(date.minusDays(i.toLong()).format(formatter)))
             }
         }
 
@@ -93,9 +92,8 @@ object AttendanceCommand : Command(
 
         timeValues.forEach {timeRow ->
             val logRow = logValues.find { row -> row[0] == timeRow[0] }!!
-            println(logRow[0])
             timeRow[9] = positions.fold(Duration.ofSeconds(0)) { lastTime, dateColumn ->
-                lastTime + if (logRow[dateColumn] == "") {
+                lastTime + if ( dateColumn > logRow.count() - 1 || logRow[dateColumn] == "") {
                     Duration.ofSeconds(0)
                 } else {
                     logRow[dateColumn].split(':').let { timePart ->
