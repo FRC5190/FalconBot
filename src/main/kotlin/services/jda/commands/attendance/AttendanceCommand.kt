@@ -81,6 +81,7 @@ object AttendanceCommand : Command(
         for (i in 0..6) {
             if (logValues[0].contains(date.minusDays(i.toLong()).format(formatter))) {
                 positions.add(logValues[0].indexOf(date.minusDays(i.toLong()).format(formatter)))
+                println(logValues[0].indexOf(date.minusDays(i.toLong()).format(formatter)))
             }
         }
 
