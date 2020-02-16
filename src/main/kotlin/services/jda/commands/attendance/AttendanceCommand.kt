@@ -112,5 +112,6 @@ object AttendanceCommand : Command(
 
     override fun initSubcommands() {
         LeaderboardCommand.load()
+        MemberCommand.load()
     }
 }
