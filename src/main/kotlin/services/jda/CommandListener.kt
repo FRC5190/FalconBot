@@ -64,7 +64,7 @@ class CommandListener : ListenerAdapter() {
 
             var stringCommand = content.take(i).fold("", {acc, s -> "$acc$s "}).removeSuffix(" ")
             JDAService.commandIds[stringCommand]?.execute(event, content) ?: continue
-            logger.info("${event.author} executed \"${event.message.contentRaw}\"")
+            logger.info("${event.author.name} executed \"${event.message.contentRaw}\"")
             break
         }
     }
