@@ -31,10 +31,12 @@ object BuildspaceCommand : Command(
             .setTitle("Members at buildspace")
             .setColor(ColorConstants.FALCON_MAROON)
 
+        var fields = 0
         timeValues.filter { it[10] == "TRUE" }.forEach { timeRow ->
             val lastLogin = LocalDateTime.parse(timeRow[6])
             val loginTime = Duration.ofSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
             if (loginTime.toHours() < 14) {
+                fields++
                 embed.addField(
                     "${timeRow[1]} ${timeRow[2]}",
                     String.format(
@@ -46,6 +48,10 @@ object BuildspaceCommand : Command(
                     true
                 )
             }
+        }
+
+        if (fields == 0) {
+            embed.setDescription("There are no members at the buildspace.")
         }
 
         event.channel.sendMessage(embed.build()).queue()
