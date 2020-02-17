@@ -12,9 +12,9 @@ object LeaderboardCommand : Command(
     description = "Gets the attendance leaderboard",
     ids = listOf(
         "leaderboard",
-        "lead",
+        "l",
         "leader",
-        "l"
+        "lead"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {

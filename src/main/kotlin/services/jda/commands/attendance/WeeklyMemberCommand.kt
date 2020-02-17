@@ -12,6 +12,7 @@ object WeeklyMemberCommand : Command(
     parent = WeeklyCommand,
     name = "Weekly Member Attendance",
     description = "Gets the weekly attendance of another member.",
+    usage = "@member",
     ids = listOf(
         "member",
         "user",

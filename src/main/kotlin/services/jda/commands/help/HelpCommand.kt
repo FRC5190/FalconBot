@@ -10,6 +10,7 @@ import services.jda.commands.CommandPermissionLevel
 object HelpCommand: Command(
     name = "Help",
     description = "Nice.",
+    usage = "!help",
     ids = listOf(
         "help",
         "commands"
@@ -50,6 +51,10 @@ object HelpCommand: Command(
                             false
                         )
 
+                    if (command.usage != "") {
+                        embed.setFooter(JDAService.commandIds.filterValues { it == command }.keys.first() + " ${command.usage}")
+                    }
+
                     command.children.forEach { child ->
                         embed.addField(
                             "${child.name}",
@@ -69,6 +74,11 @@ object HelpCommand: Command(
                             "",
                             false
                         )
+
+                    if (command.usage != "") {
+                        embed.setFooter(JDAService.commandIds.filterValues { it == command }.keys.first() + " ${command.usage}")
+                    }
+
 
                     event.channel.sendMessage(embed.build()).queue()
                 }

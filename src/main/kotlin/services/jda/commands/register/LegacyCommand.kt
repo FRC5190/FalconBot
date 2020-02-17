@@ -10,6 +10,7 @@ object LegacyCommand : Command(
     parent = RegisterCommand,
     name = "Register Legacy",
     description = "Links a FalconTime account with a Discord account.",
+    usage = "9195555555",
     ids = listOf(
         "legacy"
     )

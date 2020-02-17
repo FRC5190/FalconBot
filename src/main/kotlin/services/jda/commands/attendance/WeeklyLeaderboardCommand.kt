@@ -15,9 +15,9 @@ object WeeklyLeaderboardCommand : Command(
     description = "Gets the leaderboard for who has the most hours in the last week.",
     ids = listOf(
         "leaderboard",
-        "lead",
+        "l",
         "leader",
-        "l"
+        "lead"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {

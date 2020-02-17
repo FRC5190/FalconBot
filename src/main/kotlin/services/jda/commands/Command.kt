@@ -8,6 +8,7 @@ abstract class Command(
     val permissionLevel: CommandPermissionLevel = CommandPermissionLevel.ALL,
     val name: String,
     val description: String,
+    val usage: String = "",
     val ids: List<String>
 ) {
     var fullIds = mutableListOf<String>()

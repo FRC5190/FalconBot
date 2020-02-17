@@ -14,8 +14,8 @@ object WeeklyCommand : Command(
     description = "Gets weekly attendance data.",
     ids = listOf(
         "weekly",
-        "week",
-        "w"
+        "w",
+        "week"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {

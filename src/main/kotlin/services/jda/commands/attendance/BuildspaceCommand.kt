@@ -15,8 +15,8 @@ object BuildspaceCommand : Command(
     description = "Returns a list of all users that are at the buildspace.",
     ids = listOf(
         "buildspace",
-        "build",
-        "b"
+        "b",
+        "build"
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {

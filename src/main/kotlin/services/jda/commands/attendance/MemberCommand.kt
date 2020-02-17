@@ -12,6 +12,7 @@ object MemberCommand : Command(
     parent = AttendanceCommand,
     name = "Member Attendance",
     description = "Gets the attendance of another member.",
+    usage = "@member",
     ids = listOf(
         "member",
         "user",
