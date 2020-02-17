@@ -34,7 +34,18 @@ object BuildspaceCommand : Command(
         timeValues.filter { it[10] == "TRUE" }.forEach { timeRow ->
             val lastLogin = LocalDateTime.parse(timeRow[6])
             val loginTime = Duration.ofSeconds(lastLogin.until(currentTime, ChronoUnit.SECONDS))
-            embed.addField("${timeRow[1]} ${timeRow[2]}", String.format("%dh, %02dm, %02ds", loginTime.seconds / 3600, (loginTime.seconds % 3600) / 60, (loginTime.seconds % 60)), true)
+            if (loginTime.toHours() < 14) {
+                embed.addField(
+                    "${timeRow[1]} ${timeRow[2]}",
+                    String.format(
+                        "%dh, %02dm, %02ds",
+                        loginTime.seconds / 3600,
+                        (loginTime.seconds % 3600) / 60,
+                        (loginTime.seconds % 60)
+                    ),
+                    true
+                )
+            }
         }
 
         event.channel.sendMessage(embed.build()).queue()
