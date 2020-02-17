@@ -11,7 +11,7 @@ object Application {
         JDAService.start()
         GoogleSheets.start()
 
-        println("< JDA > \n" +
+        println("\n< JDA > \n" +
                 "   > Name: ${JDAService.service.selfUser.name} \n" +
                 "   > Status: ${JDAService.service.status} \n" +
                 "   > Gateway Ping: ${JDAService.service.gatewayPing} \n" +
