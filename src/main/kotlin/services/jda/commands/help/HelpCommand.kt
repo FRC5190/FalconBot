@@ -52,7 +52,7 @@ object HelpCommand: Command(
                         )
 
                     if (command.usage != "") {
-                        embed.setFooter(JDAService.commandIds.filterValues { it == command }.keys.first() + " ${command.usage}")
+                        embed.setFooter("Example: ${Configuration.jdaPrefix}" + JDAService.commandIds.filterValues { it == command }.keys.first() + " ${command.usage}")
                     }
 
                     command.children.forEach { child ->
@@ -76,14 +76,14 @@ object HelpCommand: Command(
                         )
 
                     if (command.usage != "") {
-                        embed.setFooter(JDAService.commandIds.filterValues { it == command }.keys.first() + " ${command.usage}")
+                        embed.setFooter("Example: ${Configuration.jdaPrefix}" + JDAService.commandIds.filterValues { it == command }.keys.first() + " ${command.usage}")
                     }
 
 
                     event.channel.sendMessage(embed.build()).queue()
                 }
             } else {
-                event.channel.sendMessage("Unrecognized command `${Configuration.jdaPrefix}${stringArgs}`")
+                event.channel.sendMessage("Unrecognized command `${Configuration.jdaPrefix}${stringArgs}`").queue()
             }
         }
     }
