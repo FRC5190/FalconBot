@@ -39,12 +39,12 @@ object AttendanceCommand : Command(
             var embed = EmbedBuilder()
                 .setTitle("Member Attendance")
                 .setDescription("${member.firstName} ${member.lastName}")
-                .addField("**Total Hours:** #${member.totalPlace}", member.totalTime.hmsTimeFormat(), false)
-                .addField("**Week Hours:** #${member.weeklyPlace}", member.weeklyTime.hmsTimeFormat(), false)
+                .addField("**#${member.totalPlace}** in total hours:", member.totalTime.hmsTimeFormat(), false)
+                .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), false)
                 .setFooter(if (member.loggedIn) {
-                    "Logged in for " + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
+                    "**Logged in:**\n" + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
                 } else {
-                    member.loginDate.mdyDateFormat() + " for " + member.lastLoginTime.hmsTimeFormat()
+                    "**${member.loginDate.mdyDateFormat()}:**\n" + member.lastLoginTime.hmsTimeFormat()
                 })
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()

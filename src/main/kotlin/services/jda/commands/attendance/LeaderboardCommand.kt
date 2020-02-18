@@ -26,9 +26,9 @@ object LeaderboardCommand : Command(
             .setTitle("Total Hour Leaderboard")
             .setColor(ColorConstants.FALCON_MAROON)
 
-        for (i in 0 until 11) {
+        for (i in 0 until 12) {
             val member = members[i]
-            embed.addField("**${member.totalPlace}:** ${member.firstName} ${member.lastName}", member.totalTime.hmsTimeFormat(), true)
+            embed.addField("**#${member.totalPlace}:** ${member.firstName} ${member.lastName}", member.totalTime.hmsTimeFormat(), true)
         }
 
         event.channel.sendMessage(embed.build()).queue()

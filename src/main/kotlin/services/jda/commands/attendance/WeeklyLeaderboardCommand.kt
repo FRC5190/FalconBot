@@ -22,12 +22,12 @@ object WeeklyLeaderboardCommand : Command(
             .sortWeeklyHours()
 
         val embed = EmbedBuilder()
-            .setTitle("Total Hour Leaderboard")
+            .setTitle("Weekly Hours Leaderboard")
             .setColor(ColorConstants.FALCON_MAROON)
 
-        for (i in 0 until 11) {
+        for (i in 0 until 12) {
             val member = members[i]
-            embed.addField("**${member.weeklyPlace}:** ${member.firstName} ${member.lastName}", member.weeklyTime.hmsTimeFormat(), true)
+            embed.addField("**#${member.weeklyPlace}:** ${member.firstName} ${member.lastName}", member.weeklyTime.hmsTimeFormat(), true)
         }
 
         event.channel.sendMessage(embed.build()).queue()
