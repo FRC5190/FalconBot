@@ -7,6 +7,7 @@ import services.jda.commands.Command
 import services.sheets.Attendance
 import services.sheets.Attendance.sortTotalHours
 import services.sheets.Attendance.sortWeeklyHours
+import services.sheets.Attendance.sortSeasonHours
 import services.sheets.Attendance.hmsTimeFormat
 import services.sheets.Attendance.mdyDateFormat
 import java.time.LocalDate
@@ -26,6 +27,7 @@ object AttendanceCommand : Command(
         val members = Attendance.getMembers()
             .sortTotalHours()
             .sortWeeklyHours()
+            .sortSeasonHours()
 
         val member = members.find { member ->
             member.discordID == if (args.count() < 2) {
@@ -41,6 +43,7 @@ object AttendanceCommand : Command(
                 .setDescription("${member.firstName} ${member.lastName}")
                 .addField("**#${member.totalPlace}** in total hours:", member.totalTime.hmsTimeFormat(), false)
                 .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), false)
+                .addField("**#${member.seasonPlace}** this season:", member.seasonTime.hmsTimeFormat(), false)
                 .setFooter(if (member.loggedIn) {
                     "Logged in: " + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
                 } else {
