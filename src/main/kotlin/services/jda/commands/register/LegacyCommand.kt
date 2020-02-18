@@ -44,7 +44,7 @@ object LegacyCommand : Command(
                     values.add(listOf(args[2], event.author.id))
                     data.setValues(values)
                     GoogleSheets.service.spreadsheets().values()
-                        .update(Configuration.sheets["users"], "Sheet1!A2:B1000", data)
+                        .update(Configuration.sheets["discord"], "Sheet1!A2:B1000", data)
                         .setValueInputOption("RAW")
                         .execute()
 
