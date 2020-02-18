@@ -31,7 +31,7 @@ object AttendanceCommand : Command(
             member.discordID == if (args.count() < 2) {
                 event.author.id
             } else {
-                event.message.mentionedUsers[0]
+                event.message.mentionedUsers[0].id
             }
         }
 
