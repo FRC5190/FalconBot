@@ -49,13 +49,13 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     val logs = mutableMapOf<LocalDate, Duration>()
 
     init {
-        for (column in 3 until logDate.count()) {
+        for (column in 3 until logDate.count() - 1) {
             val key = logDate[column].split(':').let { part ->
                 LocalDate.of(part[0].toInt(), part[1].toInt(), part[2].toInt())
             }
 
-            val value = if (logRow[column - 1] != "") {
-                logRow[column - 1].split(':').let { part ->
+            val value = if (logRow[column] != "") {
+                logRow[column].split(':').let { part ->
                     Duration.ofHours(part[0].toLong())
                         .plusMinutes(part[1].toLong())
                         .plusSeconds(part[2].toLong())
