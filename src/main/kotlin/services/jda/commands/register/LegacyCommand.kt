@@ -27,7 +27,7 @@ object LegacyCommand : Command(
             event.channel.sendMessage(embed).queue()
         } else {
             val data = GoogleSheets.service.spreadsheets().values()
-                .get(Configuration.sheets["users"], "Sheet1!A2:B1000")
+                .get(Configuration.sheets["discord"], "Sheet1!A2:B1000")
                 .execute()
 
             val values = data.getValues()
@@ -36,7 +36,7 @@ object LegacyCommand : Command(
                 event.channel.sendMessage("You are already registered!").queue()
             } else {
                 val userValues = GoogleSheets.service.spreadsheets().values()
-                    .get(Configuration.sheets["times"], "Current!A2:J1000")
+                    .get(Configuration.sheets["falcontime"], "Current!A2:J1000")
                     .execute()
                     .getValues()
 
