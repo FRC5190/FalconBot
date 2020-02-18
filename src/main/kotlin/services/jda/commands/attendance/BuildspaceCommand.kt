@@ -21,9 +21,11 @@ object BuildspaceCommand : Command(
         val loggedInMembers = Attendance.getMembers()
             .filter { it.loggedIn }
             .sortedBy { it.loginTime + it.getDateTime(LocalDate.now()) }
+            .asReversed()
 
         val embed = EmbedBuilder()
             .setTitle("Members at Buildspace")
+            .setColor(ColorConstants.FALCON_MAROON)
 
         if (loggedInMembers.count() != 0) {
             for (member in loggedInMembers) {

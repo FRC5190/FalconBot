@@ -46,6 +46,7 @@ object AttendanceCommand : Command(
                 } else {
                     member.loginDate.mdyDateFormat() + " for " + member.lastLoginTime.hmsTimeFormat()
                 })
+                .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
             event.channel.sendMessage(embed).queue()

@@ -52,6 +52,7 @@ object Attendance {
     fun List<Member>.sortTotalHours(): List<Member> {
         val sortedMembers = this
             .toMutableList().sortedBy { it.totalTime }
+            .asReversed()
 
         for (position in 1 until sortedMembers.count()) {
             sortedMembers[position - 1].totalPlace = position
@@ -63,6 +64,7 @@ object Attendance {
     fun List<Member>.sortWeeklyHours(): List<Member> {
         val sortedMembers = this
             .toMutableList().sortedBy { it.weeklyTime }
+            .asReversed()
 
         for (position in 1 until sortedMembers.count()) {
             sortedMembers[position - 1].weeklyPlace = position

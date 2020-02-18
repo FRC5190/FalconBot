@@ -16,7 +16,10 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
     val loginDate = LocalDateTime.parse(timeRow[6]).toLocalDate()
 
-    val loginTime = if (loggedIn) {
+    val loginTime = if (
+        loggedIn &&
+        Duration.ofSeconds(LocalDateTime.parse(timeRow[6]).until(LocalDateTime.now(), ChronoUnit.SECONDS)).toHours() < 14
+    ) {
         Duration.ofSeconds(LocalDateTime.parse(timeRow[6]).until(LocalDateTime.now(), ChronoUnit.SECONDS))
     } else {
         Duration.ofSeconds(0)
@@ -36,13 +39,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
         Duration.ofHours(part[0].toLong())
             .plusMinutes(part[1].toLong())
             .plusSeconds(part[2].toLong())
-    }.plus(
-        if (loginTime.toHours() < 14) {
-            loginTime
-        } else {
-            Duration.ofSeconds(0)
-        }
-    )
+    }.plus(loginTime)
 
     var weeklyTime = Duration.ofSeconds(0)
 
