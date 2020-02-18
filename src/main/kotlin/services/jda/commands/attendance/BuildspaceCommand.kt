@@ -20,7 +20,7 @@ object BuildspaceCommand : Command(
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         val loggedInMembers = Attendance.getMembers()
             .filter { it.loggedIn }
-            .sortedBy { it.loginTime + it.getDateTime(LocalDate.now()) }
+            .sortedBy { (it.loginTime + it.getDateTime(LocalDate.now())) }
             .asReversed()
 
         val embed = EmbedBuilder()
