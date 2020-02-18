@@ -68,7 +68,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
             val date = LocalDate.now()
             for (i in 0..6) {
-                weeklyTime = weeklyTime.plus(logs[date.minusDays(i.toLong())])
+                weeklyTime = weeklyTime.plus(getDateTime(date.minusDays(i.toLong())))
             }
         }
     }
