@@ -1,5 +1,6 @@
 package services.sheets
 
+import services.Configuration
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -13,6 +14,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
     var totalPlace = 0
     var weeklyPlace = 0
+    var seasonPlace = 0
 
     val loginDate = LocalDateTime.parse(timeRow[6]).toLocalDate()
 
@@ -39,6 +41,8 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     }.plus(loginTime)
 
     var weeklyTime = Duration.ofSeconds(0)
+
+    var seasonTime = Duration.ofSeconds(0)
 
     val logs = mutableMapOf<LocalDate, Duration>()
 
@@ -69,6 +73,13 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
         for (i in 0..6) {
             weeklyTime = weeklyTime.plus(getDateTime(date.minusDays(i.toLong())))
         }
+        weeklyTime = weeklyTime.plus(loginTime)
+
+        val seasonDate = LocalDate.parse(Configuration.seasonDate)
+        for (i in 0 until ChronoUnit.DAYS.between(seasonDate, date)) {
+            seasonTime = seasonTime.plus(getDateTime(date.minusDays(i.toLong())))
+        }
+        seasonTime = seasonTime.plus(loginTime)
     }
 
     fun getDateTime(date: LocalDate) = logs[date] ?: Duration.ofSeconds(0)

@@ -13,6 +13,7 @@ object Configuration {
     lateinit var appVersion: String
     lateinit var jdaPrefix: String
     lateinit var jdaToken: String
+    lateinit var seasonDate: String
     lateinit var sheets: Map<String, String>
     lateinit var links: Map<String, String>
     lateinit var owners: List<String>
@@ -25,6 +26,7 @@ object Configuration {
         appVersion = json["app_version"] as String
         jdaPrefix = json["jda_prefix"] as String
         jdaToken = json["jda_token"] as String
+        seasonDate = json["season_startdate"] as String
         sheets = json["sheets"] as Map<String, String>
         links = json["links"] as Map<String, String>
         owners = json["owners"] as List<String>

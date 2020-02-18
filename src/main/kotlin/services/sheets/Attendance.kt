@@ -75,6 +75,18 @@ object Attendance {
         return sortedMembers
     }
 
+    fun List<Member>.sortSeasonHours(): List<Member> {
+        val sortedMembers = this
+            .toMutableList().sortedBy { it.seasonTime }
+            .asReversed()
+
+        for (position in 1 until sortedMembers.count()) {
+            sortedMembers[position - 1].seasonPlace = position
+        }
+
+        return sortedMembers
+    }
+
     fun Duration.hmsTimeFormat(): String =
         String.format(
             "%dh, %02dm, %02ds",
