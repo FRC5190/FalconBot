@@ -39,8 +39,8 @@ object AttendanceCommand : Command(
             var embed = EmbedBuilder()
                 .setTitle("Member Attendance")
                 .setDescription("${member.firstName} ${member.lastName}")
-                .addField("**${member.totalPlace}:** Total Time", member.totalTime.hmsTimeFormat(), false)
-                .addField("**${member.weeklyPlace}:** Weekly Time", member.weeklyTime.hmsTimeFormat(), false)
+                .addField("**Total Hours:** #${member.totalPlace}", member.totalTime.hmsTimeFormat(), false)
+                .addField("**Week Hours:** #${member.weeklyPlace}", member.weeklyTime.hmsTimeFormat(), false)
                 .setFooter(if (member.loggedIn) {
                     "Logged in for " + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
                 } else {
