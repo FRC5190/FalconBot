@@ -32,6 +32,8 @@ object Attendance {
     }
 
     fun getMembers(): List<Member>{
+        update()
+
         val members = mutableListOf<Member>()
 
         for (memberRow in memberSheet) {

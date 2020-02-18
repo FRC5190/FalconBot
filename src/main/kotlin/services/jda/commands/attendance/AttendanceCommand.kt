@@ -42,7 +42,7 @@ object AttendanceCommand : Command(
                 .addField("**#${member.totalPlace}** in total hours:", member.totalTime.hmsTimeFormat(), false)
                 .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), false)
                 .setFooter(if (member.loggedIn) {
-                    "Logged in:" + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
+                    "Logged in: " + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
                 } else {
                     "${member.loginDate.mdyDateFormat()}: " + member.lastLoginTime.hmsTimeFormat()
                 })
