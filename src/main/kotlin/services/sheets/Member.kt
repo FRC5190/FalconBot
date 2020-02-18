@@ -17,7 +17,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     val loginDate = LocalDateTime.parse(timeRow[6]).toLocalDate()
 
     val loginTime = if (loggedIn) {
-        Duration.ofSeconds(loginDate.until(LocalDateTime.now(), ChronoUnit.SECONDS))
+        Duration.ofSeconds(LocalDateTime.parse(timeRow[6]).until(LocalDateTime.now(), ChronoUnit.SECONDS))
     } else {
         Duration.ofSeconds(0)
     }
