@@ -28,7 +28,7 @@ object AttendanceCommand : Command(
             .sortWeeklyHours()
 
         val member = members.find { member ->
-            member.discordID == if (args.count() < 1) {
+            member.discordID == if (args.count() < 2) {
                 event.author.id
             } else {
                 event.message.mentionedUsers[0]
