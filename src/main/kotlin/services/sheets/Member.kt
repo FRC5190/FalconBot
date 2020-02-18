@@ -47,12 +47,10 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
             loggedIn = false
         }
 
-        for (column in 3 until logDate.count() - 1) {
+        for (column in 3 until logDate.count()) {
             val key = logDate[column].split(':').let { part ->
                 LocalDate.of(part[0].toInt(), part[1].toInt(), part[2].toInt())
             }
-
-            println(key)
 
             val value = if (logRow.count() > column && logRow[column] != "") {
                 logRow[column].split(':').let { part ->
