@@ -34,12 +34,12 @@ object Attendance {
     fun getMembers(): List<Member>{
         val members = mutableListOf<Member>()
 
-        for (memberRow in memberSheet.drop(1)) {
-            val logRow = logSheet.drop(1).find { row ->
+        for (memberRow in memberSheet) {
+            val logRow = logSheet.find { row ->
                 row[0] == memberRow[0]
             } ?: continue
 
-            val discord = discordSheet.drop(1).find { row ->
+            val discord = discordSheet.find { row ->
                 row[0] == memberRow[0]
             }?.get(1) ?: ""
 
