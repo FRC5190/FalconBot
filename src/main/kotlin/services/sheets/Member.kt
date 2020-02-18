@@ -55,7 +55,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
             }
 
             val value = if (logRow[column - 1] != "") {
-                logRow[column].split(':').let { part ->
+                logRow[column - 1].split(':').let { part ->
                     Duration.ofHours(part[0].toLong())
                         .plusMinutes(part[1].toLong())
                         .plusSeconds(part[2].toLong())
