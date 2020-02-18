@@ -2,9 +2,10 @@ package services.jda.commands.attendance
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import services.Configuration
-import services.GoogleSheets
 import services.jda.commands.Command
+import services.sheets.Attendance
+import services.sheets.Attendance.sortTotalHours
+import services.sheets.Attendance.hmsTimeFormat
 
 object LeaderboardCommand : Command(
     parent = AttendanceCommand,
@@ -18,29 +19,22 @@ object LeaderboardCommand : Command(
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        val timeData = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.sheets["times"], "Current!A2:L1000")
-            .execute()
-
-        val leaderboard = AttendanceCommand.getLeaderboard(timeData.getValues() as MutableList<MutableList<String>>)
-        var first = mutableListOf<String>()
-        var last = mutableListOf<String>()
-        var hours = mutableListOf<String>()
-        for (row in leaderboard.subList(0, 12)) {
-            first.add(first.count(), row[1])
-            last.add(last.count(), row[2])
-            hours.add(hours.count(), row[9])
-        }
+        val members = Attendance.getMembers()
+            .sortTotalHours()
 
         val embed = EmbedBuilder()
-            .setTitle("Attendance Leaderboard")
+            .setTitle("Total Hour Leaderboard")
             .setColor(ColorConstants.FALCON_MAROON)
 
-        for (i in 0..11) {
-            var hms = hours[i].split(':')
-            embed.addField("**#${i + 1}:** ${first[i]} ${last[i]}", "${hms[0]}h, ${hms[1]}m, ${hms[2]}s", true)
+        for (i in 0 until 11) {
+            val member = members[i]
+            embed.addField("**${member.totalPlace}:** ${member.firstName} ${member.lastName}", member.totalTime.hmsTimeFormat(), true)
         }
 
         event.channel.sendMessage(embed.build()).queue()
+    }
+
+    override fun initSubcommands() {
+        WeeklyLeaderboardCommand.load()
     }
 }
