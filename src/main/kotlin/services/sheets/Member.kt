@@ -9,7 +9,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     val falconTimeID = timeRow[0]
     val firstName = timeRow[1]
     val lastName = timeRow[2]
-    val loggedIn = timeRow[10] == "TRUE"
+    var loggedIn = timeRow[10] == "TRUE"
 
     var totalPlace = 0
     var weeklyPlace = 0
@@ -25,15 +25,12 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
         Duration.ofSeconds(0)
     }
 
-    val lastLoginTime = if (!loggedIn) {
+    val lastLoginTime =
         timeRow[8].split(':').let { part ->
             Duration.ofHours(part[0].toLong())
                 .plusMinutes(part[1].toLong())
                 .plusSeconds(part[2].toLong())
         }
-    } else {
-        Duration.ofSeconds(0)
-    }
 
     val totalTime = timeRow[9].split(':').let { part ->
         Duration.ofHours(part[0].toLong())
@@ -46,6 +43,10 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     val logs = mutableMapOf<LocalDate, Duration>()
 
     init {
+        if (loginTime == Duration.ofSeconds(0)) {
+            loggedIn = false
+        }
+
         for (column in 3 until logDate.count() - 1) {
             val key = logDate[column].split(':').let { part ->
                 LocalDate.of(part[0].toInt(), part[1].toInt(), part[2].toInt())
@@ -62,11 +63,11 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
             }
 
             logs[key] = value
+        }
 
-            val date = LocalDate.now()
-            for (i in 0..6) {
-                weeklyTime = weeklyTime.plus(getDateTime(date.minusDays(i.toLong())))
-            }
+        val date = LocalDate.now()
+        for (i in 0..6) {
+            weeklyTime = weeklyTime.plus(getDateTime(date.minusDays(i.toLong())))
         }
     }
 
