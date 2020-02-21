@@ -23,6 +23,8 @@ object AttendanceCommand : Command(
             .sortTotalHours()
             .sortWeeklyHours()
             .sortSeasonHours()
+            .sortWeeklyAvg()
+            .sortDailyAvg()
 
         val member = members.find { member ->
             member.discordID == if (args.count() < 2) {
@@ -39,6 +41,8 @@ object AttendanceCommand : Command(
                 .addField("**#${member.totalPlace}** in total hours:", member.totalTime.hmsTimeFormat(), false)
                 .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), false)
                 .addField("**#${member.seasonPlace}** this season:", member.seasonTime.hmsTimeFormat(), false)
+                .addField("**#${member.weeklyAvgPlace}** in weekly average:", member.weeklyAverage.hmsTimeFormat(), false)
+                .addField("**#${member.dailyAvgPlace}** in daily average:", member.dailyAverage.hmsTimeFormat(), false)
                 .setFooter(if (member.loggedIn) {
                     "Logged in: " + (member.loginTime + member.getTime(LocalDate.now())).hmsTimeFormat()
                 } else {

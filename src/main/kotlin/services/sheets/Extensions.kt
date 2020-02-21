@@ -28,6 +28,30 @@ fun List<Member>.sortWeeklyHours(): List<Member> {
     return sortedMembers
 }
 
+fun List<Member>.sortWeeklyAvg(): List<Member> {
+    val sortedMembers = this
+        .toMutableList().sortedBy { it.weeklyAverage }
+        .asReversed()
+
+    for (position in 1 until sortedMembers.count()) {
+        sortedMembers[position - 1].weeklyAvgPlace = position
+    }
+
+    return sortedMembers
+}
+
+fun List<Member>.sortDailyAvg(): List<Member> {
+    val sortedMembers = this
+        .toMutableList().sortedBy { it.dailyAverage }
+        .asReversed()
+
+    for (position in 1 until sortedMembers.count()) {
+        sortedMembers[position - 1].dailyAvgPlace = position
+    }
+
+    return sortedMembers
+}
+
 fun List<Member>.sortSeasonHours(): List<Member> {
     val sortedMembers = this
         .toMutableList().sortedBy { it.seasonTime }
