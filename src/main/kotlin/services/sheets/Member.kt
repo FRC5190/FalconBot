@@ -15,7 +15,6 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     var totalPlace = 0
     var weeklyPlace = 0
     var seasonPlace = 0
-    var weeklyAvgPlace = 0
     var dailyAvgPlace = 0
 
     val loginDate = LocalDateTime.parse(timeRow[6]).toLocalDate()
@@ -47,8 +46,6 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     var seasonTime = Duration.ofSeconds(0)
 
     var dailyAverage = Duration.ofSeconds(0)
-
-    var weeklyAverage = Duration.ofSeconds(0)
 
     private val logs = mutableMapOf<LocalDate, Duration>()
 
@@ -88,15 +85,6 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
         seasonTime = seasonTime.plus(loginTime)
 
         dailyAverage = logs.values.fold(Duration.ZERO, {acc, r -> acc + r}).dividedBy(logs.count().toLong())
-
-        weeklyAverage = mutableListOf<Duration>().apply {
-            logs.values.chunked(7).forEach {
-                add(it.fold(Duration.ZERO, {acc, r -> acc + r}))
-            }
-        }.let {
-            it.fold(Duration.ZERO, {acc, r -> acc + r})
-                .dividedBy(it.count().toLong())
-        }
     }
 
     fun getTime(date: LocalDate) = logs[date] ?: Duration.ofSeconds(0)

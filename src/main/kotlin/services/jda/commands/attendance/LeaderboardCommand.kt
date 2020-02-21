@@ -37,5 +37,6 @@ object LeaderboardCommand : Command(
     override fun initSubcommands() {
         WeeklyLeaderboardCommand.load()
         SeasonLeaderboardCommand.load()
+        DailyLeaderboardCommand.load()
     }
 }

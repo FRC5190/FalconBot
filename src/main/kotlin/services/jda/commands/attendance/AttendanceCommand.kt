@@ -23,7 +23,6 @@ object AttendanceCommand : Command(
             .sortTotalHours()
             .sortWeeklyHours()
             .sortSeasonHours()
-            .sortWeeklyAvg()
             .sortDailyAvg()
 
         val member = members.find { member ->
@@ -38,11 +37,12 @@ object AttendanceCommand : Command(
             var embed = EmbedBuilder()
                 .setTitle("Member Attendance")
                 .setDescription("${member.firstName} ${member.lastName}")
-                .addField("**#${member.totalPlace}** in total hours:", member.totalTime.hmsTimeFormat(), false)
-                .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), false)
-                .addField("**#${member.seasonPlace}** this season:", member.seasonTime.hmsTimeFormat(), false)
-                .addField("**#${member.weeklyAvgPlace}** in weekly average:", member.weeklyAverage.hmsTimeFormat(), false)
-                .addField("**#${member.dailyAvgPlace}** in daily average:", member.dailyAverage.hmsTimeFormat(), false)
+                .addField("**#${member.totalPlace}** in total hours:", member.totalTime.hmsTimeFormat(), true)
+                .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), true)
+                .addField("","",true)
+                .addField("**#${member.seasonPlace}** this season:", member.seasonTime.hmsTimeFormat(), true)
+                .addField("**#${member.dailyAvgPlace}** in daily average:", member.dailyAverage.hmsTimeFormat(), true)
+                .addField("","",true)
                 .setFooter(if (member.loggedIn) {
                     "Logged in: " + (member.loginTime + member.getTime(LocalDate.now())).hmsTimeFormat()
                 } else {
