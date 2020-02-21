@@ -23,7 +23,7 @@ class CommandListener : ListenerAdapter() {
         if (File("temp.json").exists()) {
             var embed = EmbedBuilder()
                 .setTitle("Restarted!")
-                .setDescription("Bot was restarted from this channel.")
+                .setDescription("Bot was restarted.")
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
