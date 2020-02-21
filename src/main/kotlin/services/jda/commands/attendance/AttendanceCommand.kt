@@ -4,12 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.Configuration
 import services.jda.commands.Command
-import services.sheets.Attendance
-import services.sheets.Attendance.sortTotalHours
-import services.sheets.Attendance.sortWeeklyHours
-import services.sheets.Attendance.sortSeasonHours
-import services.sheets.Attendance.hmsTimeFormat
-import services.sheets.Attendance.mdyDateFormat
+import services.sheets.*
 import java.time.LocalDate
 
 object AttendanceCommand : Command(
@@ -45,9 +40,9 @@ object AttendanceCommand : Command(
                 .addField("**#${member.weeklyPlace}** in the past week:", member.weeklyTime.hmsTimeFormat(), false)
                 .addField("**#${member.seasonPlace}** this season:", member.seasonTime.hmsTimeFormat(), false)
                 .setFooter(if (member.loggedIn) {
-                    "Logged in: " + (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat()
+                    "Logged in: " + (member.loginTime + member.getTime(LocalDate.now())).hmsTimeFormat()
                 } else {
-                    "${member.loginDate.mdyDateFormat()}: " + member.lastLoginTime.hmsTimeFormat()
+                    "${member.loginDate.mdyDateFormat()}: " + (member.lastLoginTime + member.getTime(LocalDate.now())).hmsTimeFormat()
                 })
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()

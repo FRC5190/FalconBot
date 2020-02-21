@@ -2,38 +2,28 @@ package services
 
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import services.configuration.StringListValue
+import services.configuration.StringMapValue
+import services.configuration.StringValue
 import java.io.File
-import java.io.FileReader
 
 object Configuration {
-    lateinit var file: File
-    lateinit var json: JSONObject
+    var file = File("configuration.json")
+    var json = JSONParser().parse(file.readText()) as JSONObject
 
-    lateinit var appName: String
-    lateinit var appVersion: String
-    lateinit var jdaPrefix: String
-    lateinit var jdaToken: String
-    lateinit var seasonDate: String
-    lateinit var sheets: Map<String, String>
-    lateinit var links: Map<String, String>
-    lateinit var owners: List<String>
+    var appName: String by StringValue("app_name")
+    var appVersion: String by StringValue("app_version")
+    var jdaPrefix: String by StringValue("jda_prefix")
+    var jdaToken: String by StringValue("jda_token")
+    var seasonDate: String by StringValue("season_startdate")
+    var sheets: Map<String, String> by StringMapValue("sheets")
+    var links: Map<String, String> by StringMapValue("links")
+    var owners: List<String> by StringListValue("owners")
+    var botChannel: String by StringValue("bot_channel")
 
-    fun load() {
-        file = File("configuration.json")
-        json = JSONParser().parse(file.readText()) as JSONObject
+    var values = mutableMapOf<String, StringValue>()
 
-        appName = json["app_name"] as String
-        appVersion = json["app_version"] as String
-        jdaPrefix = json["jda_prefix"] as String
-        jdaToken = json["jda_token"] as String
-        seasonDate = json["season_startdate"] as String
-        sheets = json["sheets"] as Map<String, String>
-        links = json["links"] as Map<String, String>
-        owners = json["owners"] as List<String>
-    }
-
-    fun setValue(key: String, value: Any?) {
-        json[key] = value
+    fun save() {
         file.writeText(json.toJSONString())
     }
 }

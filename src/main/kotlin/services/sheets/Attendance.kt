@@ -1,5 +1,6 @@
 package services.sheets
 
+import com.google.api.services.sheets.v4.model.ValueRange
 import services.Configuration
 import services.GoogleSheets
 import java.time.Duration
@@ -7,28 +8,18 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 object Attendance {
-    private var memberSheet = GoogleSheets.service.spreadsheets().values()
-        .get(Configuration.sheets["falcontime"], "Current!A2:L1000")
-        .execute().getValues() as MutableList<MutableList<String>>
+    private var memberSheet = Sheet("falcontime", "Current!A2:L1000")
+    private var logSheet = Sheet("falcontime", "Date Log!A1:ZZ1000")
+    private var discordSheet = Sheet("discord", "Sheet1!A2:B1000")
 
-    private var logSheet = GoogleSheets.service.spreadsheets().values()
-        .get(Configuration.sheets["falcontime"], "Date Log!A1:ZZ1000")
-        .execute().getValues() as MutableList<MutableList<String>>
-
-    private var discordSheet = GoogleSheets.service.spreadsheets().values()
-        .get(Configuration.sheets["discord"], "Sheet1!A2:B1000")
-        .execute().getValues() as MutableList<MutableList<String>>
+    init {
+        update()
+    }
 
     fun update() {
-        memberSheet = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.sheets["falcontime"], "Current!A2:L1000")
-            .execute().getValues() as MutableList<MutableList<String>>
-        logSheet = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.sheets["falcontime"], "Date Log!A1:ZZ1000")
-            .execute().getValues() as MutableList<MutableList<String>>
-        discordSheet = GoogleSheets.service.spreadsheets().values()
-            .get(Configuration.sheets["discord"], "Sheet1!A2:B1000")
-            .execute().getValues() as MutableList<MutableList<String>>
+        memberSheet.update()
+        logSheet.update()
+        discordSheet.update()
     }
 
     fun getMembers(): List<Member>{
@@ -36,65 +27,35 @@ object Attendance {
 
         val members = mutableListOf<Member>()
 
-        for (memberRow in memberSheet) {
-            val logRow = logSheet.find { row ->
+        for (memberRow in memberSheet.values) {
+            val logRow = logSheet.values.find { row ->
                 row[0] == memberRow[0]
             } ?: continue
 
-            val discord = discordSheet.find { row ->
+            val discord = discordSheet.values.find { row ->
                 row[0] == memberRow[0]
             }?.get(1) ?: ""
 
-            members.add(Member(discord, memberRow, logRow, logSheet[0]))
+            members.add(Member(discord, memberRow, logRow, logSheet.values[0]))
         }
 
         return members
     }
 
-    fun List<Member>.sortTotalHours(): List<Member> {
-        val sortedMembers = this
-            .toMutableList().sortedBy { it.totalTime }
-            .asReversed()
-
-        for (position in 1 until sortedMembers.count()) {
-            sortedMembers[position - 1].totalPlace = position
+    fun getDiscordIDs(): Map<String, String> = mutableMapOf<String, String>().apply {
+        discordSheet.values.forEach { row ->
+            if (row.isNotEmpty()) {
+                put(row[1], row[0])
+            }
         }
-
-        return sortedMembers
     }
 
-    fun List<Member>.sortWeeklyHours(): List<Member> {
-        val sortedMembers = this
-            .toMutableList().sortedBy { it.weeklyTime }
-            .asReversed()
-
-        for (position in 1 until sortedMembers.count()) {
-            sortedMembers[position - 1].weeklyPlace = position
-        }
-
-        return sortedMembers
+    fun setDiscordIDs(discordIDs: Map<String, String>) {
+        discordSheet.values = mutableListOf<MutableList<String>>()
+            .apply {
+                discordIDs.forEach { id ->
+                    add(mutableListOf( id.value, id.key ))
+                }
+            }
     }
-
-    fun List<Member>.sortSeasonHours(): List<Member> {
-        val sortedMembers = this
-            .toMutableList().sortedBy { it.seasonTime }
-            .asReversed()
-
-        for (position in 1 until sortedMembers.count()) {
-            sortedMembers[position - 1].seasonPlace = position
-        }
-
-        return sortedMembers
-    }
-
-    fun Duration.hmsTimeFormat(): String =
-        String.format(
-            "%dh, %02dm, %02ds",
-            this.seconds / 3600,
-            (this.seconds % 3600) / 60,
-            this.seconds % 60
-        )
-
-    fun LocalDate.mdyDateFormat(): String =
-        this.format(DateTimeFormatter.ofPattern("M/d/YYYY"))
 }

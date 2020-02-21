@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.jda.commands.Command
 import services.sheets.Attendance
-import services.sheets.Attendance.sortTotalHours
-import services.sheets.Attendance.hmsTimeFormat
+import services.sheets.hmsTimeFormat
+import services.sheets.sortTotalHours
 
 object LeaderboardCommand : Command(
     parent = AttendanceCommand,

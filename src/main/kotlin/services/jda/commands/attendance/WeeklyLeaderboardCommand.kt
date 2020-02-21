@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.jda.commands.Command
 import services.sheets.Attendance
-import services.sheets.Attendance.hmsTimeFormat
-import services.sheets.Attendance.sortWeeklyHours
+import services.sheets.hmsTimeFormat
+import services.sheets.sortWeeklyHours
 
 object WeeklyLeaderboardCommand : Command(
     parent = LeaderboardCommand,
@@ -22,7 +22,7 @@ object WeeklyLeaderboardCommand : Command(
             .sortWeeklyHours()
 
         val embed = EmbedBuilder()
-            .setTitle("Weekly Hours Leaderboard")
+            .setTitle("Weekly Hour Leaderboard")
             .setColor(ColorConstants.FALCON_MAROON)
 
         for (i in 0 until 12) {

@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.jda.commands.Command
 import services.sheets.Attendance
-import services.sheets.Attendance.hmsTimeFormat
+import services.sheets.hmsTimeFormat
 import java.time.LocalDate
 
 object BuildspaceCommand : Command(
@@ -20,7 +20,7 @@ object BuildspaceCommand : Command(
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         val loggedInMembers = Attendance.getMembers()
             .filter { it.loggedIn }
-            .sortedBy { it.loginTime + it.getDateTime(LocalDate.now()) }
+            .sortedBy { it.loginTime + it.getTime(LocalDate.now()) }
             .asReversed()
 
         val embed = EmbedBuilder()
@@ -31,7 +31,7 @@ object BuildspaceCommand : Command(
             for (member in loggedInMembers) {
                 embed.addField(
                     "${member.firstName} ${member.lastName}",
-                    (member.loginTime + member.getDateTime(LocalDate.now())).hmsTimeFormat(),
+                    (member.loginTime + member.getTime(LocalDate.now())).hmsTimeFormat(),
                     true
                 )
             }

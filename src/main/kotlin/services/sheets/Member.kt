@@ -44,7 +44,7 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
     var seasonTime = Duration.ofSeconds(0)
 
-    val logs = mutableMapOf<LocalDate, Duration>()
+    private val logs = mutableMapOf<LocalDate, Duration>()
 
     init {
         if (loginTime == Duration.ofSeconds(0)) {
@@ -71,16 +71,16 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
         val date = LocalDate.now()
         for (i in 0..6) {
-            weeklyTime = weeklyTime.plus(getDateTime(date.minusDays(i.toLong())))
+            weeklyTime = weeklyTime.plus(getTime(date.minusDays(i.toLong())))
         }
         weeklyTime = weeklyTime.plus(loginTime)
 
         val seasonDate = LocalDate.parse(Configuration.seasonDate)
         for (i in 0 until ChronoUnit.DAYS.between(seasonDate, date)) {
-            seasonTime = seasonTime.plus(getDateTime(date.minusDays(i.toLong())))
+            seasonTime = seasonTime.plus(getTime(date.minusDays(i.toLong())))
         }
         seasonTime = seasonTime.plus(loginTime)
     }
 
-    fun getDateTime(date: LocalDate) = logs[date] ?: Duration.ofSeconds(0)
+    fun getTime(date: LocalDate) = logs[date] ?: Duration.ofSeconds(0)
 }

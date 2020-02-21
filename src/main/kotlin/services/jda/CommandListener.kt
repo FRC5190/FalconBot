@@ -27,7 +27,7 @@ class CommandListener : ListenerAdapter() {
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
-            var channel = (JSONParser().parse(File("temp.json").readText()) as JSONObject)["restart_channel"] as String
+            var channel = Configuration.botChannel
 
             if (event.jda.users.any {it.id == channel}) {
                 event.jda.getUserById(channel)!!.openPrivateChannel().complete().sendMessage(embed).queue()
@@ -36,8 +36,6 @@ class CommandListener : ListenerAdapter() {
             if (event.jda.textChannels.any {it.id == channel}) {
                 event.jda.getTextChannelById(channel)!!.sendMessage(embed).queue()
             }
-
-            File("temp.json").delete()
         }
     }
 

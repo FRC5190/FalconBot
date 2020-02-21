@@ -7,7 +7,6 @@ object Application {
     lateinit var startTime: LocalDateTime
 
     fun start() {
-        Configuration.load()
         JDAService.start()
         GoogleSheets.start()
 
