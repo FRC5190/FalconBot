@@ -18,7 +18,7 @@ object AddLinkCommand : Command(
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (args.count() >= 4) {
             val links = Configuration.links.toMutableMap()
-            val name = args.subList( 2, args.count() - 2 ).fold("", {acc, r -> acc + r + " "}).removeSuffix(" ")
+            val name = args.subList( 2, args.count() - 1 ).fold("", {acc, r -> acc + r + " "}).removeSuffix(" ")
             links[name] = args.last()
             Configuration.links = links
         }

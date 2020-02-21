@@ -18,7 +18,7 @@ object RemoveLinkCommand : Command(
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
         if (args.count() >= 3) {
             val links = Configuration.links.toMutableMap()
-            val name = args.subList( 2, args.count() - 1 ).fold("", {acc, r -> acc + r + " "}).removeSuffix(" ")
+            val name = args.subList( 2, args.count() ).fold("", {acc, r -> acc + r + " "}).removeSuffix(" ")
             links.remove(name)
             Configuration.links = links
         }

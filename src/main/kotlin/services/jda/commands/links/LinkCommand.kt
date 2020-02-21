@@ -18,8 +18,16 @@ object LinkCommand: Command(
             .setTitle("Links")
             .setColor(ColorConstants.FALCON_MAROON)
 
-        Configuration.links.forEach { name, link ->
-            embed.addField("", "[${name}](${link})", true)
+        val links = mutableListOf<Pair<String, String>>().apply {
+            Configuration.links.forEach { (name, link) ->
+                add(Pair(name, link))
+            }
+        }
+
+        for (link in 0 until links.count() step 2) {
+            val link1 = links.getOrNull(link)?.let { "[${it.first}](${it.second})" } ?: ""
+            val link2 = links.getOrNull(link + 1)?.let { "[${it.first}(${it.second})]" } ?: ""
+            embed.addField(link1, link2, true)
         }
 
         event.channel.sendMessage(embed.build()).queue()
