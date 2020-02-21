@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import services.jda.CommandListener
 import services.jda.commands.attendance.AttendanceCommand
 import services.jda.commands.help.HelpCommand
+import services.jda.commands.ownerlevel.ChannelCommand
 import services.jda.commands.ownerlevel.RestartCommand
 import services.jda.commands.ping.PingCommand
 import services.jda.commands.register.RegisterCommand
@@ -40,5 +41,6 @@ object JDAService {
         RegisterCommand.load()
         PingCommand.load()
         RestartCommand.load()
+        ChannelCommand.load()
     }
 }
