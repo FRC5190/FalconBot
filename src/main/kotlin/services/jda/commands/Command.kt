@@ -29,7 +29,9 @@ abstract class Command(
             for (identifier in ids) {
                 for (parentId in parent.fullIds) {
                     JDAService.commandIds.put("$parentId $identifier", this)
+                    JDAService.commandIds.put("$parentId -$identifier", this)
                     fullIds.add("$parentId $identifier")
+                    fullIds.add("$parentId -$identifier")
                 }
             }
         }
