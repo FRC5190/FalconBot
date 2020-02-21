@@ -12,7 +12,7 @@ import services.jda.commands.ownerlevel.ChannelCommand
 import services.jda.commands.ownerlevel.RestartCommand
 import services.jda.commands.ping.PingCommand
 import services.jda.commands.register.RegisterCommand
-import services.jda.commands.spreadsheet.SpreadsheetCommand
+import services.jda.commands.links.LinkCommand
 
 object JDAService {
     val logger = LoggerFactory.getLogger("Application")
@@ -36,7 +36,7 @@ object JDAService {
 
     private fun loadCommands() {
         AttendanceCommand.load()
-        SpreadsheetCommand.load()
+        LinkCommand.load()
         HelpCommand.load()
         RegisterCommand.load()
         PingCommand.load()
