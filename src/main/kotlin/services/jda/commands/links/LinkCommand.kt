@@ -26,7 +26,7 @@ object LinkCommand: Command(
 
         for (link in 0 until links.count() step 2) {
             val link1 = links.getOrNull(link)?.let { "[${it.first}](${it.second})" } ?: ""
-            val link2 = links.getOrNull(link + 1)?.let { "[${it.first}(${it.second})]" } ?: ""
+            val link2 = links.getOrNull(link + 1)?.let { "[${it.first}](${it.second})" } ?: ""
             embed.addField(link1, link2, true)
         }
 
