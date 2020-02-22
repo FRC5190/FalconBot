@@ -63,7 +63,7 @@ class CommandListener : ListenerAdapter() {
 
             var stringCommand = content.take(i).fold("", {acc, s -> "$acc$s "}).removeSuffix(" ")
             JDAService.commandIds[stringCommand]?.let {
-                if (it.permissionLevel == CommandPermissionLevel.ALL) {
+                if (Configuration.owners.contains(event.author.id) || it.permissionLevel == CommandPermissionLevel.ALL) {
                     it.execute(event, content)
                 }
             } ?: continue
