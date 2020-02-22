@@ -20,6 +20,7 @@ object Configuration {
     var links: Map<String, String> by StringMapValue("links")
     var owners: List<String> by StringListValue("owners")
     var botChannel: String by StringValue("bot_channel")
+    var countdowns: Map<String, String> by StringMapValue("countdowns")
 
     var values = mutableMapOf<String, StringValue>()
 

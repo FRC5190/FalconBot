@@ -26,7 +26,7 @@ object LinkCommand: Command(
     }
 
     override fun initSubcommands() {
-        AddLinkCommand.load()
-        RemoveLinkCommand.load()
+        AddCountCommand.load()
+        RemoveCountCommand.load()
     }
 }
