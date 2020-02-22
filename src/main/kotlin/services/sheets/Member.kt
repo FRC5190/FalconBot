@@ -57,21 +57,15 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
         }
 
         val date = LocalDate.now()
+        val seasonDate = LocalDate.parse(Configuration.seasonDate)
 
-        weeklyTime = weeklyTime.apply {
-            for (i in 0..6) {
-                plus(getTime(date.minusDays(i.toLong())))
-            }
-            plus(loginTime)
-        }
+        weeklyTime = (0..6).fold(Duration.ZERO, { acc, i ->
+            acc + getTime(date.minusDays(i.toLong()))
+        }) + loginTime
 
-        seasonTime = seasonTime.apply {
-            val seasonDate = LocalDate.parse(Configuration.seasonDate)
-            for (i in 0 until ChronoUnit.DAYS.between(seasonDate, date)) {
-                plus(getTime(date.minusDays(i.toLong())))
-            }
-            plus(loginTime)
-        }
+        seasonTime = (0 until ChronoUnit.DAYS.between(seasonDate, date)).fold(Duration.ZERO, { acc, l ->
+            acc + getTime(date.minusDays(l))
+        }) + loginTime
 
         dailyAverage = logs.values.total().dividedBy(logs.count().toLong())
     }
