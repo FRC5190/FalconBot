@@ -27,6 +27,8 @@ object CountdownCommand: Command(
             var startTime = LocalDateTime.parse(datetime)
             var currentTime = LocalDateTime.now()
 
+            embed.addField(startTime.toString(), "", true)
+
             if (currentTime.isAfter(startTime)) {
                 Configuration.countdowns = Configuration.countdowns.toMutableMap().apply { remove(name) }
             } else {
