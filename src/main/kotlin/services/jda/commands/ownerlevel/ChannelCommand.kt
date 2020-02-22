@@ -15,8 +15,6 @@ object ChannelCommand : Command(
     )
 ){
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        if (Configuration.owners.any { it == event.author.id }) {
-            Configuration.botChannel = event.channel.id
-        }
+        Configuration.botChannel = event.channel.id
     }
 }

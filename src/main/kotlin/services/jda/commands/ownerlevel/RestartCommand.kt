@@ -24,9 +24,7 @@ object RestartCommand : Command(
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        if (Configuration.owners.any { it == event.author.id }) {
-            JDAService.service.shutdownNow()
-            System.exit(0)
-        }
+        JDAService.service.shutdownNow()
+        System.exit(0)
     }
 }

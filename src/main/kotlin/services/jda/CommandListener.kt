@@ -12,6 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import services.Configuration
 import services.JDAService
+import services.jda.commands.CommandPermissionLevel
 import java.io.File
 import java.io.FileWriter
 import java.time.LocalDateTime
@@ -61,7 +62,11 @@ class CommandListener : ListenerAdapter() {
             }
 
             var stringCommand = content.take(i).fold("", {acc, s -> "$acc$s "}).removeSuffix(" ")
-            JDAService.commandIds[stringCommand]?.execute(event, content) ?: continue
+            JDAService.commandIds[stringCommand]?.let {
+                if (it.permissionLevel == CommandPermissionLevel.ALL) {
+                    it.execute(event, content)
+                }
+            } ?: continue
             logger.info("${event.author.name} executed \"${event.message.contentRaw}\"")
             break
         }
