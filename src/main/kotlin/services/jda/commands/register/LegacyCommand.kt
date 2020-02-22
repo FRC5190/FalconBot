@@ -36,15 +36,15 @@ object LegacyCommand : Command(
                 .build()
 
             event.channel.sendMessage(embed).queue()
-        } else if (discordIDs.containsValue(args[3])) {
+        } else if (discordIDs.containsValue(args[2])) {
             var embed = EmbedBuilder()
                 .setTitle("Error")
-                .setDescription("FalconTime ID ${args[3]} has already been linked to another Discord account.")
+                .setDescription("FalconTime ID ${args[2]} has already been linked to another Discord account.")
                 .setColor(ColorConstants.FALCON_MAROON)
                 .build()
 
             event.channel.sendMessage(embed).queue()
-        } else if (!Attendance.getMembers().any { it.falconTimeID == args[3] }) {
+        } else if (!Attendance.getMembers().any { it.falconTimeID == args[2] }) {
             var embed = EmbedBuilder()
                 .setTitle("Error")
                 .setDescription("Invalid FalconTime ID specified.")
@@ -54,7 +54,7 @@ object LegacyCommand : Command(
 
             event.channel.sendMessage(embed).queue()
         } else {
-            discordIDs[event.author.id] = args[3]
+            discordIDs[event.author.id] = args[2]
             Attendance.setDiscordIDs(discordIDs)
 
             var embed = EmbedBuilder()
