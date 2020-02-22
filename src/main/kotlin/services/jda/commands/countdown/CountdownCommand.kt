@@ -41,7 +41,7 @@ object CountdownCommand: Command(
 
                 val countdown = "${days}d, ${hours}h, ${minutes}m, ${seconds}s"
                 val event = name.split(' ').fold("", {acc, r -> acc + r.capitalize() + " "})
-                val date = datetime.format(DateTimeFormatter.ofPattern("M/d/YY hh aa"))
+                val date = datetime.format(DateTimeFormatter.ofPattern("M/d/YY hh a"))
 
                 embed.addField("**$event:** $date", countdown, true)
             }
