@@ -58,14 +58,14 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
         val date = LocalDate.now()
 
-        weeklyTime.apply {
+        weeklyTime = weeklyTime.apply {
             for (i in 0..6) {
                 plus(getTime(date.minusDays(i.toLong())))
             }
             plus(loginTime)
         }
 
-        seasonTime.apply {
+        seasonTime = seasonTime.apply {
             val seasonDate = LocalDate.parse(Configuration.seasonDate)
             for (i in 0 until ChronoUnit.DAYS.between(seasonDate, date)) {
                 plus(getTime(date.minusDays(i.toLong())))
