@@ -7,6 +7,7 @@ import org.json.simple.JSONObject
 import org.slf4j.LoggerFactory
 import services.jda.CommandListener
 import services.jda.commands.attendance.AttendanceCommand
+import services.jda.commands.countdown.CountdownCommand
 import services.jda.commands.help.HelpCommand
 import services.jda.commands.ownerlevel.ChannelCommand
 import services.jda.commands.ownerlevel.RestartCommand
@@ -42,5 +43,6 @@ object JDAService {
         PingCommand.load()
         RestartCommand.load()
         ChannelCommand.load()
+        CountdownCommand.load()
     }
 }
