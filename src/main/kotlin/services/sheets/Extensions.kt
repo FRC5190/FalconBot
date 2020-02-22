@@ -61,7 +61,7 @@ fun Duration.hmsTimeFormat(): String =
     )
 
 fun LocalDate.mdyDateFormat(): String =
-    this.format(DateTimeFormatter.ofPattern("M/d/YYYY"))
+    this.format(DateTimeFormatter.ofPattern("M/d/uuuu"))
 
 fun Collection<Duration>.total(): Duration =
     this.fold(Duration.ZERO, {acc, duration -> acc + duration })
