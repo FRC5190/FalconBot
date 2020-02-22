@@ -14,6 +14,7 @@ import services.jda.commands.ownerlevel.RestartCommand
 import services.jda.commands.ping.PingCommand
 import services.jda.commands.register.RegisterCommand
 import services.jda.commands.links.LinkCommand
+import services.jda.commands.ownerlevel.VersionCommand
 
 object JDAService {
     val logger = LoggerFactory.getLogger("Application")
@@ -44,5 +45,6 @@ object JDAService {
         RestartCommand.load()
         ChannelCommand.load()
         CountdownCommand.load()
+        VersionCommand.load()
     }
 }
