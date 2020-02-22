@@ -62,3 +62,13 @@ fun Duration.hmsTimeFormat(): String =
 
 fun LocalDate.mdyDateFormat(): String =
     this.format(DateTimeFormatter.ofPattern("M/d/YYYY"))
+
+fun Collection<Duration>.total(): Duration =
+    this.fold(Duration.ZERO, {acc, duration -> acc + duration })
+
+fun String.toDuration(): Duration =
+    this.let {
+        Duration.ofHours(it[0].toLong())
+            .plusMinutes(it[1].toLong())
+            .plusSeconds(it[2].toLong())
+    }

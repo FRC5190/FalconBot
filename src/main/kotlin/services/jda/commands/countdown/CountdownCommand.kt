@@ -40,8 +40,8 @@ object CountdownCommand: Command(
                 currentTime = currentTime.plusSeconds(seconds)
 
                 val countdown = "${days}d, ${hours}h, ${minutes}m, ${seconds}s"
-                val event = name.split(' ').fold("", {acc, r -> acc + r.capitalize() + " "})
-                val date = datetime.format(DateTimeFormatter.ofPattern("M/d/YY hh a"))
+                val event = name.split(' ').fold("", {acc, r -> acc + r.capitalize() + " "}).removeSuffix(" ")
+                val date = datetime.format(DateTimeFormatter.ofPattern("M/d/uu hh a"))
 
                 embed.addField("**$event:** $date", countdown, true)
             }
