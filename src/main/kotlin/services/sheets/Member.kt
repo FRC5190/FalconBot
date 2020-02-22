@@ -19,27 +19,19 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
 
     val loginDate = LocalDateTime.parse(timeRow[6]).toLocalDate()
 
-    val loginTime = if (
-        loggedIn &&
-        Duration.ofSeconds(LocalDateTime.parse(timeRow[6]).until(LocalDateTime.now(), ChronoUnit.SECONDS)).toHours() < 14
-    ) {
-        Duration.ofSeconds(LocalDateTime.parse(timeRow[6]).until(LocalDateTime.now(), ChronoUnit.SECONDS))
-    } else {
-        Duration.ofSeconds(0)
-    }
-
-    val lastLoginTime =
-        timeRow[8].split(':').let { part ->
-            Duration.ofHours(part[0].toLong())
-                .plusMinutes(part[1].toLong())
-                .plusSeconds(part[2].toLong())
+    val loginTime = Duration.ofSeconds(LocalDateTime.parse(timeRow[6]).until(LocalDateTime.now(), ChronoUnit.SECONDS))
+        .let {
+            if (it.toHours() < 14 && loggedIn) {
+                it
+            } else {
+                loggedIn = false
+                Duration.ZERO
+            }
         }
 
-    val totalTime = timeRow[9].split(':').let { part ->
-        Duration.ofHours(part[0].toLong())
-            .plusMinutes(part[1].toLong())
-            .plusSeconds(part[2].toLong())
-    }.plus(loginTime)
+    val lastLoginTime = timeRow[8].toDuration()
+
+    val totalTime = timeRow[9].toDuration().plus(loginTime)
 
     var weeklyTime = Duration.ofSeconds(0)
 
@@ -50,41 +42,38 @@ class Member(val discordID: String, timeRow: List<String>, logRow: List<String>,
     private val logs = mutableMapOf<LocalDate, Duration>()
 
     init {
-        if (loginTime == Duration.ofSeconds(0)) {
-            loggedIn = false
-        }
-
         for (column in 3 until logDate.count()) {
             val key = logDate[column].split(':').let { part ->
                 LocalDate.of(part[0].toInt(), part[1].toInt(), part[2].toInt())
             }
 
             val value = if (logRow.count() > column && logRow[column] != "") {
-                logRow[column].split(':').let { part ->
-                    Duration.ofHours(part[0].toLong())
-                        .plusMinutes(part[1].toLong())
-                        .plusSeconds(part[2].toLong())
-                }
+                logRow[column].toDuration()
             } else {
-                Duration.ofSeconds(0)
+                Duration.ZERO
             }
 
             logs[key] = value
         }
 
         val date = LocalDate.now()
-        for (i in 0..6) {
-            weeklyTime = weeklyTime.plus(getTime(date.minusDays(i.toLong())))
-        }
-        weeklyTime = weeklyTime.plus(loginTime)
 
-        val seasonDate = LocalDate.parse(Configuration.seasonDate)
-        for (i in 0 until ChronoUnit.DAYS.between(seasonDate, date)) {
-            seasonTime = seasonTime.plus(getTime(date.minusDays(i.toLong())))
+        weeklyTime.apply {
+            for (i in 0..6) {
+                plus(getTime(date.minusDays(i.toLong())))
+            }
+            plus(loginTime)
         }
-        seasonTime = seasonTime.plus(loginTime)
 
-        dailyAverage = logs.values.fold(Duration.ZERO, {acc, r -> acc + r}).dividedBy(logs.count().toLong())
+        seasonTime.apply {
+            val seasonDate = LocalDate.parse(Configuration.seasonDate)
+            for (i in 0 until ChronoUnit.DAYS.between(seasonDate, date)) {
+                plus(getTime(date.minusDays(i.toLong())))
+            }
+            plus(loginTime)
+        }
+
+        dailyAverage = logs.values.total().dividedBy(logs.count().toLong())
     }
 
     fun getTime(date: LocalDate) = logs[date] ?: Duration.ofSeconds(0)
