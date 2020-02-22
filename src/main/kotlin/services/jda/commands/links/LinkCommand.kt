@@ -19,7 +19,7 @@ object LinkCommand: Command(
             .setColor(ColorConstants.FALCON_MAROON)
 
         Configuration.links.forEach { name, link ->
-            embed.addField(name, "[click]($link)", true)
+            embed.addField(name.split(' ').fold("", {acc, r -> acc + r.capitalize() + " "}), "[click]($link)", true)
         }
 
         event.channel.sendMessage(embed.build()).queue()
