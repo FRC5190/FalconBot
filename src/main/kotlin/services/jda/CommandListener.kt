@@ -52,7 +52,7 @@ class CommandListener : ListenerAdapter() {
     }
 
     private fun onGenericMessageReceived(event: MessageReceivedEvent) {
-        val content = event.message.contentRaw.removePrefix(Configuration.jdaPrefix).toLowerCase().split(' ')
+        val content = event.message.contentRaw.removePrefix(Configuration.jdaPrefix).split(' ')
 
         if (!event.author.isBot) {
             if (SessionHandler.contains(event.author)) {
@@ -71,7 +71,7 @@ class CommandListener : ListenerAdapter() {
             }
 
             var stringCommand = content.take(i).fold("", {acc, s -> "$acc$s "}).removeSuffix(" ")
-            JDAService.commandIds[stringCommand]?.let {
+            JDAService.commandIds[stringCommand.toLowerCase()]?.let {
                 if (Configuration.owners.contains(event.author.id) || it.permissionLevel == CommandPermissionLevel.ALL) {
                     it.execute(event, content)
                 }

@@ -59,7 +59,7 @@ class RegisterSession : MessageSession() {
     }
 
     private fun typeSelection(event: MessageReceivedEvent, args: List<String>) {
-        when(args[0]) {
+        when(args[0].toLowerCase()) {
             "continue" -> {
                 val embed = EmbedBuilder()
                     .setTitle("Register")
@@ -176,7 +176,7 @@ class RegisterSession : MessageSession() {
     }
 
     private fun setGender(event: MessageReceivedEvent, args: List<String>) {
-        data["gender"] = when(args[0]) {
+        data["gender"] = when(args[0].toLowerCase()) {
             "male" -> "MALE"
             "female" -> "FEMALE"
             "other" -> "OTHER"
@@ -213,7 +213,7 @@ class RegisterSession : MessageSession() {
     }
 
     private fun setRole(event: MessageReceivedEvent, args: List<String>) {
-        data["role"] = when(args[0]) {
+        data["role"] = when(args[0].toLowerCase()) {
             "mentor" -> "MENTOR"
             "engineering" -> "ENGINEERING"
             "programming" -> "PROGRAMMING"
