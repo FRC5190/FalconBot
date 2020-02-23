@@ -201,7 +201,7 @@ class RegisterSession : MessageSession() {
             "engineering" -> "ENGINEERING"
             "programming" -> "PROGRAMMING"
             "marketing" -> "MARKETING"
-            else -> null
+            else -> ""
         }
 
         if (data["role"] != "") {
