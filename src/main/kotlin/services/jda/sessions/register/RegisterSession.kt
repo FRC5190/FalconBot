@@ -117,7 +117,7 @@ class RegisterSession : MessageSession() {
         try {
             data["falcontime"] = args[0].toLong()
 
-            if (!Attendance.getMembers().any { member -> member.falconTimeID == data["falcontime"] as String }) {
+            if (!Attendance.getMembers().any { member -> member.falconTimeID == data["falcontime"].toString() }) {
                 val embed = EmbedBuilder()
                     .setTitle("Register")
                     .setDescription(
