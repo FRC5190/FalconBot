@@ -28,9 +28,9 @@ class RegisterSession : MessageSession() {
                         "If you do not have a FalconTime account, type `Continue`")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            data["private_channel"] = event.author.openPrivateChannel().complete().id
+            data["private_channel"] = event.author.openPrivateChannel().complete()
             event.jda.getPrivateChannelById(data["private_channel"] as String)!!
-                .sendMessage(embed.build()).queue()
+                .sendMessage(embed.build()).complete()
 
             if (event.channelType != ChannelType.PRIVATE) {
                 val infoEmbed = EmbedBuilder()
@@ -38,7 +38,7 @@ class RegisterSession : MessageSession() {
                     .setDescription("Check your DMs!")
                     .setColor(ColorConstants.FALCON_MAROON)
 
-                event.channel.sendMessage(infoEmbed.build()).queue()
+                event.channel.sendMessage(infoEmbed.build()).complete()
             }
 
             data["status"] = "type"
@@ -65,7 +65,7 @@ class RegisterSession : MessageSession() {
                     .setFooter("Example: Bob, Miller")
                     .setColor(ColorConstants.FALCON_MAROON)
 
-                event.channel.sendMessage(embed.build()).queue()
+                event.channel.sendMessage(embed.build()).complete()
 
                 data["status"] = "name"
             }
@@ -76,7 +76,7 @@ class RegisterSession : MessageSession() {
                     .setDescription("`legacy` or `continue` was not specified.")
                     .setColor(ColorConstants.FALCON_MAROON)
 
-                event.channel.sendMessage(embed.build()).queue()
+                event.channel.sendMessage(embed.build()).complete()
             }
         }
     }
@@ -94,7 +94,7 @@ class RegisterSession : MessageSession() {
                     .setFooter("Example: 9195555555")
                     .setColor(ColorConstants.FALCON_MAROON)
 
-                event.channel.sendMessage(embed.build()).queue()
+                event.channel.sendMessage(embed.build()).complete()
                 data["status"] = "falcontime"
                 name
             } else {
@@ -104,7 +104,7 @@ class RegisterSession : MessageSession() {
                     .setFooter("Example: Bob, Miller")
                     .setColor(ColorConstants.FALCON_MAROON)
 
-                event.channel.sendMessage(embed.build()).queue()
+                event.channel.sendMessage(embed.build()).complete()
                 ""
             }
         }
@@ -121,7 +121,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: yourname@example.com")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
             data["status"] = "email"
         } else {
             val embed = EmbedBuilder()
@@ -130,7 +130,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: 9195555555")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
         }
     }
 
@@ -145,7 +145,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: other")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
             data["status"] = "gender"
         } else {
             val embed = EmbedBuilder()
@@ -154,7 +154,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: yourname@example.com")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
         }
     }
 
@@ -181,7 +181,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: mentor")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
             data["status"] = "role"
         } else {
             val embed = EmbedBuilder()
@@ -191,7 +191,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: other")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
         }
     }
 
@@ -211,7 +211,7 @@ class RegisterSession : MessageSession() {
                         "Thank you for completing registration.")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
             this.end()
         } else {
             val embed = EmbedBuilder()
@@ -221,7 +221,7 @@ class RegisterSession : MessageSession() {
                 .setFooter("Example: mentor")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).complete()
         }
     }
 }
