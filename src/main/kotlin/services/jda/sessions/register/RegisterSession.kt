@@ -127,7 +127,7 @@ class RegisterSession : MessageSession() {
 
             event.channel.sendMessage(embed.build()).complete()
             data["status"] = "email"
-        } catch {
+        } catch(e: Exception) {
             val embed = EmbedBuilder()
                 .setTitle("Error")
                 .setDescription("FalconTime ID provided was not valid.")
