@@ -251,7 +251,7 @@ class RegisterSession : MessageSession() {
         val lastName = (data["name"] as String).split(',')[1]
 
         Attendance.addMember(
-            discordID, data["falcontime"] as String, firstName, lastName,
+            discordID, data["falcontime"].toString(), firstName, lastName,
             data["email"] as String, data["gender"] as String, role
         )
 
