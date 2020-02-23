@@ -19,7 +19,6 @@ class RegisterSession : MessageSession() {
         set("email", "")
         set("gender", "")
         set("role", "")
-        set("discord", "")
     }
 
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
@@ -118,15 +117,27 @@ class RegisterSession : MessageSession() {
         try {
             data["falcontime"] = args[0].toLong()
 
-            val embed = EmbedBuilder()
-                .setTitle("Register")
-                .setDescription("FalconTime ID set to ${args[0]}. \n" +
-                        "Next, provide your email.")
-                .setFooter("Example: yourname@example.com")
-                .setColor(ColorConstants.FALCON_MAROON)
+            if (!Attendance.getMembers().any { member -> member.falconTimeID == data["falcontime"] as String }) {
+                val embed = EmbedBuilder()
+                    .setTitle("Register")
+                    .setDescription(
+                        "FalconTime ID set to ${args[0]}. \n" +
+                                "Next, provide your email."
+                    )
+                    .setFooter("Example: yourname@example.com")
+                    .setColor(ColorConstants.FALCON_MAROON)
 
-            event.channel.sendMessage(embed.build()).complete()
-            data["status"] = "email"
+                event.channel.sendMessage(embed.build()).complete()
+                data["status"] = "email"
+            } else {
+                val embed = EmbedBuilder()
+                    .setTitle("Error")
+                    .setDescription(
+                        "Another member already uses that ID! \n" +
+                                "Choose an ID that has not been taken."
+                    )
+                    .setColor(ColorConstants.FALCON_MAROON)
+            }
         } catch(e: Exception) {
             val embed = EmbedBuilder()
                 .setTitle("Error")
@@ -216,7 +227,8 @@ class RegisterSession : MessageSession() {
                 .setColor(ColorConstants.FALCON_MAROON)
 
             event.channel.sendMessage(embed.build()).complete()
-            this.end()
+
+            finish(event.author.id)
         } else {
             val embed = EmbedBuilder()
                 .setTitle("Error")
@@ -227,5 +239,22 @@ class RegisterSession : MessageSession() {
 
             event.channel.sendMessage(embed.build()).complete()
         }
+    }
+
+    private fun finish(discordID: String) {
+        val role = when(data["role"]) {
+            "MENTOR" -> "MENTOR"
+            else -> "STUDENT"
+        }
+
+        val firstName = (data["name"] as String).split(',')[0]
+        val lastName = (data["name"] as String).split(',')[1]
+
+        Attendance.addMember(
+            discordID, data["falcontime"] as String, firstName, lastName,
+            data["email"] as String, data["gender"] as String, role
+        )
+
+        end()
     }
 }

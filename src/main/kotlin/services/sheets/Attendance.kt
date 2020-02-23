@@ -41,6 +41,35 @@ object Attendance {
         return members
     }
 
+    fun addMember(
+        discordID: String, falconTimeID: String, firstName: String,
+        lastName: String, email: String, role: String, gender: String
+    ) {
+        memberSheet.values = memberSheet.values.toMutableList().apply {
+            add(listOf(
+                falconTimeID, firstName, lastName,
+                email, role, gender,
+                "2020-01-01T00:00:00",
+                "2020-01-01T00:00:00",
+                "00:00:00",
+                "00:00:00",
+                "FALSE"
+            ))
+        }
+
+        logSheet.values = logSheet.values.toMutableList().apply {
+            add(listOf(
+                falconTimeID, firstName, lastName
+            ))
+        }
+
+        discordSheet.values = discordSheet.values.toMutableList().apply {
+            add(listOf(
+                falconTimeID, discordID
+            ))
+        }
+    }
+
     fun getDiscordIDs(): Map<String, String> = mutableMapOf<String, String>().apply {
         discordSheet.values.forEach { row ->
             if (row.isNotEmpty()) {
