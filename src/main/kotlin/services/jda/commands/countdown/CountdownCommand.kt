@@ -6,6 +6,7 @@ import services.Configuration
 import services.jda.commands.Command
 import services.jda.commands.links.AddCountCommand
 import services.jda.commands.links.RemoveCountCommand
+import sun.security.krb5.Config
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -23,7 +24,12 @@ object CountdownCommand: Command(
             .setTitle("Countdowns")
             .setColor(ColorConstants.FALCON_MAROON)
 
-        Configuration.countdowns.forEach { (name, datetime) ->
+        val countdowns = Configuration.countdowns.toSortedMap(
+            Comparator { a, b ->
+                LocalDateTime.parse(a).compareTo(LocalDateTime.parse(b))
+            })
+
+        countdowns.forEach { (name, datetime) ->
             var startTime = LocalDateTime.parse(datetime)
             var currentTime = LocalDateTime.now()
 
