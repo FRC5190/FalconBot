@@ -24,10 +24,10 @@ object CountdownCommand: Command(
             .setTitle("Countdowns")
             .setColor(ColorConstants.FALCON_MAROON)
 
-        val countdowns = Configuration.countdowns.toSortedMap(
-            Comparator { a, b ->
-                LocalDateTime.parse(a).compareTo(LocalDateTime.parse(b))
-            })
+        val countdowns = Configuration.countdowns.toList()
+            .sortedBy { (_, b) ->
+                LocalDateTime.parse(b)
+            }
 
         countdowns.forEach { (name, datetime) ->
             var startTime = LocalDateTime.parse(datetime)
