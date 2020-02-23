@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import org.json.simple.JSONObject
+import services.Configuration
+import services.jda.CommandListener
 import services.jda.commands.register.LegacyCommand
 import services.jda.sessions.MessageSession
 import services.sheets.Attendance
@@ -52,6 +54,8 @@ class RegisterSession : MessageSession() {
                 "role" -> ::setRole
                 else -> null
             }?.invoke(event, args)
+        } else if (event.message.contentRaw.startsWith(Configuration.jdaPrefix)) {
+            CommandListener().onGenericCommandReceived(event, args)
         }
     }
 
@@ -111,7 +115,7 @@ class RegisterSession : MessageSession() {
     }
 
     private fun setFalcon(event: MessageReceivedEvent, args: List<String>) {
-        if (args[0].toLong() != null) {
+        try {
             data["falcontime"] = args[0].toLong()
 
             val embed = EmbedBuilder()
@@ -123,7 +127,7 @@ class RegisterSession : MessageSession() {
 
             event.channel.sendMessage(embed.build()).complete()
             data["status"] = "email"
-        } else {
+        } catch {
             val embed = EmbedBuilder()
                 .setTitle("Error")
                 .setDescription("FalconTime ID provided was not valid.")

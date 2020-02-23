@@ -63,7 +63,7 @@ class CommandListener : ListenerAdapter() {
         }
     }
 
-    private fun onGenericCommandReceived(event: MessageReceivedEvent, content: List<String>){
+    fun onGenericCommandReceived(event: MessageReceivedEvent, content: List<String>){
         for (i in content.count() downTo  0) {
             if (i == 0) {
                 event.channel.sendMessage("Command `${event.message.contentRaw}` not found.").queue()
