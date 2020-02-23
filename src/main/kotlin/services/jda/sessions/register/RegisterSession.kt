@@ -186,8 +186,8 @@ class RegisterSession : MessageSession() {
         } else {
             val embed = EmbedBuilder()
                 .setTitle("Error")
-                .setDescription("That is not a valid gender. \n" +
-                        "Choose from `Male`, `Female`, or `Other`.")
+                .setDescription("Sorry, we do not have that gender in our database. \n" +
+                        "Please choose from `Male`, `Female`, or `Other`.")
                 .setFooter("Example: other")
                 .setColor(ColorConstants.FALCON_MAROON)
 
