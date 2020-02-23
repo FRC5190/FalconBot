@@ -1,21 +1,24 @@
 package services.jda
 
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.ReadyEvent
+import net.dv8tion.jda.api.events.emote.EmoteAddedEvent
+import net.dv8tion.jda.api.events.emote.EmoteRemovedEvent
+import net.dv8tion.jda.api.events.emote.GenericEmoteEvent
+import net.dv8tion.jda.api.events.emote.update.GenericEmoteUpdateEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import org.json.simple.JSONObject
-import org.json.simple.parser.JSONParser
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import services.Configuration
 import services.JDAService
 import services.jda.commands.CommandPermissionLevel
+import services.jda.sessions.SessionHandler
 import java.io.File
-import java.io.FileWriter
-import java.time.LocalDateTime
 
 class CommandListener : ListenerAdapter() {
     private val logger = LoggerFactory.getLogger("Application")
@@ -41,20 +44,26 @@ class CommandListener : ListenerAdapter() {
     }
 
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
-        if (!event.author.isBot && event.message.contentRaw.startsWith(Configuration.jdaPrefix)) {
-            onGenericCommandReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
-        }
+        onGenericMessageReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
     }
 
     override fun onPrivateMessageReceived(event: PrivateMessageReceivedEvent) {
-        if (!event.author.isBot && event.message.contentRaw.startsWith(Configuration.jdaPrefix)) {
-            onGenericCommandReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
+        onGenericMessageReceived(MessageReceivedEvent(event.jda, event.responseNumber, event.message))
+    }
+
+    private fun onGenericMessageReceived(event: MessageReceivedEvent) {
+        val content = event.message.contentRaw.removePrefix(Configuration.jdaPrefix).toLowerCase().split(' ')
+
+        if (!event.author.isBot) {
+            if (SessionHandler.contains(event.author)) {
+                SessionHandler.get(event.author)!!.invoke(event, content)
+            } else if (event.message.contentRaw.startsWith(Configuration.jdaPrefix)) {
+                onGenericCommandReceived(event, content)
+            }
         }
     }
 
-    private fun onGenericCommandReceived(event: MessageReceivedEvent){
-        val content = event.message.contentRaw.removePrefix(Configuration.jdaPrefix).toLowerCase().split(' ')
-
+    private fun onGenericCommandReceived(event: MessageReceivedEvent, content: List<String>){
         for (i in content.count() downTo  0) {
             if (i == 0) {
                 event.channel.sendMessage("Command `${event.message.contentRaw}` not found.").queue()
@@ -69,6 +78,28 @@ class CommandListener : ListenerAdapter() {
             } ?: continue
             logger.info("${event.author.name} executed \"${event.message.contentRaw}\"")
             break
+        }
+    }
+
+    override fun onMessageReactionAdd(event: MessageReactionAddEvent) {
+        val message = event.channel.history.getMessageById(event.messageId)!!
+        if (!event.user!!.isBot && SessionHandler.contains(message)) {
+            SessionHandler.get(message)!!.let {
+                if (it.reactions.contains(event.reactionEmote)) {
+                    it.onReactionAdd(event)
+                }
+            }
+        }
+    }
+
+    override fun onMessageReactionRemove(event: MessageReactionRemoveEvent) {
+        val message = event.channel.history.getMessageById(event.messageId)!!
+        if (!event.user!!.isBot && SessionHandler.contains(message)) {
+            SessionHandler.get(message)!!.let {
+                if (it.reactions.contains(event.reactionEmote)) {
+                    it.onReactionRemove(event)
+                }
+            }
         }
     }
 }

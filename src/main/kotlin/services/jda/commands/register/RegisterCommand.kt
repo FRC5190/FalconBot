@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import services.Configuration
 import services.jda.commands.Command
+import services.jda.sessions.register.RegisterSession
+import services.sheets.Attendance
 
 object RegisterCommand : Command(
     name = "Register",
@@ -14,15 +16,19 @@ object RegisterCommand : Command(
     )
 ) {
     override fun execute(event: MessageReceivedEvent, args: List<String>) {
-        val embed = EmbedBuilder()
-            .setTitle(this.name)
-            .setDescription("This command has not been implemented.\n" +
-                    "Use `${Configuration.jdaPrefix}register legacy [FalconTime ID]` to link a FalconTime account and a Discord account. " +
-                    "You can use the command in a private message if you don't want other members to know your ID.")
-            .setFooter("Example: ${Configuration.jdaPrefix}register legacy 9195555555")
-            .setColor(ColorConstants.FALCON_MAROON)
+        if (Attendance.getDiscordIDs().containsKey(event.author.id)) {
+            val embed = EmbedBuilder()
+                .setTitle("Error")
+                .setDescription("You are already registered.")
+                .setColor(ColorConstants.FALCON_MAROON)
 
-        event.channel.sendMessage(embed.build()).queue()
+            event.channel.sendMessage(embed.build()).queue()
+        } else {
+            RegisterSession().apply {
+                attach(event.author)
+                invoke(event, args)
+            }
+        }
     }
 
     override fun initSubcommands() {
