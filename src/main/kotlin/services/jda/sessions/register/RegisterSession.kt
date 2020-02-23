@@ -137,6 +137,8 @@ class RegisterSession : MessageSession() {
                                 "Choose an ID that has not been taken."
                     )
                     .setColor(ColorConstants.FALCON_MAROON)
+
+                event.channel.sendMessage(embed.build()).complete()
             }
         } catch(e: Exception) {
             val embed = EmbedBuilder()
