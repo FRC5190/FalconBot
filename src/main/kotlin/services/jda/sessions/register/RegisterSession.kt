@@ -28,7 +28,7 @@ class RegisterSession : MessageSession() {
                         "If you do not have a FalconTime account, type `Continue`")
                 .setColor(ColorConstants.FALCON_MAROON)
 
-            data["private_channel"] = event.author.openPrivateChannel().complete()
+            data["private_channel"] = event.author.openPrivateChannel().complete().id
             event.jda.getPrivateChannelById(data["private_channel"] as String)!!
                 .sendMessage(embed.build()).complete()
 
